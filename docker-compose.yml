@@ -76,14 +76,14 @@ services:
       - traefik.docker.network=proxy
 
       # HTTP (80) -> redirect HTTPS
-      - traefik.http.routers.chu-web.rule=Host(`afriqconsulting.store`,`www.afriqconsulting.store`)
+      - traefik.http.routers.chu-web.rule=Host(`afriqconsulting.store`)
       - traefik.http.routers.chu-web.entrypoints=web
       - traefik.http.routers.chu-web.middlewares=chu-redirect-https
       - traefik.http.middlewares.chu-redirect-https.redirectscheme.scheme=https
       - traefik.http.routers.chu-web.service=chu
 
       # HTTPS (443)
-      - traefik.http.routers.chu.rule=Host(`afriqconsulting.store`,`www.afriqconsulting.store`)
+      - traefik.http.routers.chu.rule=Host(`afriqconsulting.store`)
       - traefik.http.routers.chu.entrypoints=websecure
       - traefik.http.routers.chu.tls=true
       - traefik.http.routers.chu.tls.certresolver=lets
