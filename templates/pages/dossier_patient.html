@@ -20,63 +20,63 @@
         --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.1);
         --shadow-heavy: 0 20px 50px rgba(0, 0, 0, 0.15);
     }
-    
+
     /* Animations améliorées */
     @keyframes fadeInUp {
-        from { 
-            opacity: 0; 
-            transform: translateY(30px); 
+        from {
+            opacity: 0;
+            transform: translateY(30px);
         }
-        to { 
-            opacity: 1; 
-            transform: translateY(0); 
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
-    
+
     @keyframes slideInLeft {
-        from { 
-            transform: translateX(-30px); 
-            opacity: 0; 
+        from {
+            transform: translateX(-30px);
+            opacity: 0;
         }
-        to { 
-            transform: translateX(0); 
-            opacity: 1; 
+        to {
+            transform: translateX(0);
+            opacity: 1;
         }
     }
-    
+
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.05); }
         100% { transform: scale(1); }
     }
-    
+
     @keyframes bounceIn {
-        0% { 
-            transform: scale(0.3); 
-            opacity: 0; 
+        0% {
+            transform: scale(0.3);
+            opacity: 0;
         }
-        50% { 
-            transform: scale(1.05); 
+        50% {
+            transform: scale(1.05);
         }
-        70% { 
-            transform: scale(0.9); 
+        70% {
+            transform: scale(0.9);
         }
-        100% { 
-            transform: scale(1); 
-            opacity: 1; 
+        100% {
+            transform: scale(1);
+            opacity: 1;
         }
     }
-    
+
     /* Styles globaux améliorés */
     body {
         background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
         min-height: 100vh;
     }
-    
+
     .patient-dashboard {
         animation: fadeInUp 0.8s ease-out;
     }
-    
+
     /* En-tête du profil amélioré */
     .profile-header {
         background: var(--gradient-primary);
@@ -87,7 +87,7 @@
         overflow: hidden;
         margin-bottom: 2rem;
     }
-    
+
     .profile-header::before {
         content: '';
         position: absolute;
@@ -98,7 +98,7 @@
         background: url('{% static "images/medical-pattern.png" %}') center/cover;
         opacity: 0.1;
     }
-    
+
     .qr-code-container {
         transition: all 0.4s ease;
         border: 3px solid rgba(255, 255, 255, 0.3);
@@ -107,20 +107,20 @@
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
     }
-    
+
     .qr-code-container:hover {
         transform: scale(1.1) rotate(5deg);
         border-color: rgba(255, 255, 255, 0.6);
         box-shadow: 0 15px 35px rgba(74, 108, 247, 0.4);
     }
-    
+
     .patient-title {
         position: relative;
         padding-left: 20px;
         color: white;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
-    
+
     .patient-title::before {
         content: '';
         position: absolute;
@@ -132,7 +132,7 @@
         border-radius: 3px;
         animation: slideInLeft 1s ease-out;
     }
-    
+
     /* Cartes améliorées */
     .medical-card {
         background: white;
@@ -143,22 +143,22 @@
         margin-bottom: 1.5rem;
         overflow: hidden;
     }
-    
+
     .medical-card:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-medium);
     }
-    
+
     .medical-card-header {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         padding: 1.5rem;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
+
     .medical-card-body {
         padding: 1.5rem;
     }
-    
+
     /* Statistiques en temps réel */
     .stats-grid {
         display: grid;
@@ -166,7 +166,7 @@
         gap: 1rem;
         margin-bottom: 2rem;
     }
-    
+
     .stat-card {
         background: white;
         border-radius: 15px;
@@ -176,17 +176,17 @@
         transition: all 0.3s ease;
         border-left: 5px solid var(--primary-color);
     }
-    
+
     .stat-card:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow-medium);
     }
-    
+
     .stat-card.consultations { border-left-color: var(--info-color); }
     .stat-card.hospitalizations { border-left-color: var(--warning-color); }
     .stat-card.appointments { border-left-color: var(--success-color); }
     .stat-card.prescriptions { border-left-color: var(--danger-color); }
-    
+
     .stat-number {
         font-size: 2.5rem;
         font-weight: 800;
@@ -195,7 +195,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    
+
     .stat-label {
         color: var(--secondary-color);
         font-weight: 600;
@@ -203,7 +203,7 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
+
     /* Onglets améliorés */
     .nav-tabs-modern {
         border: none;
@@ -213,7 +213,7 @@
         box-shadow: var(--shadow-light);
         margin-bottom: 2rem;
     }
-    
+
     .nav-tabs-modern .nav-link {
         border: none;
         color: var(--secondary-color);
@@ -224,19 +224,19 @@
         position: relative;
         margin: 0 0.25rem;
     }
-    
+
     .nav-tabs-modern .nav-link:hover {
         color: var(--primary-color);
         background: rgba(74, 108, 247, 0.05);
         transform: translateY(-2px);
     }
-    
+
     .nav-tabs-modern .nav-link.active {
         color: white;
         background: var(--gradient-primary);
         box-shadow: var(--shadow-light);
     }
-    
+
     .nav-tabs-modern .nav-link .badge {
         position: absolute;
         top: -5px;
@@ -251,7 +251,7 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     /* Contenu des onglets */
     .tab-content-modern {
         background: white;
@@ -259,19 +259,19 @@
         box-shadow: var(--shadow-light);
         overflow: hidden;
     }
-    
+
     .tab-pane-modern {
         padding: 2rem;
         animation: fadeInUp 0.5s ease-out;
     }
-    
+
     /* Accordéon amélioré */
     .accordion-modern {
         border-radius: 15px;
         overflow: hidden;
         box-shadow: var(--shadow-light);
     }
-    
+
     .accordion-item-modern {
         border: none;
         margin-bottom: 1rem;
@@ -280,16 +280,16 @@
         box-shadow: var(--shadow-light);
         transition: all 0.3s ease;
     }
-    
+
     .accordion-item-modern:hover {
         box-shadow: var(--shadow-medium);
     }
-    
+
     .accordion-header-modern {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         border: none;
     }
-    
+
     .accordion-button-modern {
         background: none;
         border: none;
@@ -298,28 +298,28 @@
         font-weight: 600;
         transition: all 0.3s ease;
     }
-    
+
     .accordion-button-modern:not(.collapsed) {
         color: var(--primary-color);
         background: rgba(74, 108, 247, 0.05);
     }
-    
+
     .accordion-button-modern::after {
         transform: rotate(0deg);
         transition: transform 0.3s ease;
     }
-    
+
     .accordion-button-modern:not(.collapsed)::after {
         transform: rotate(180deg);
     }
-    
+
     /* Tableaux améliorés */
     .table-modern {
         border-radius: 10px;
         overflow: hidden;
         box-shadow: var(--shadow-light);
     }
-    
+
     .table-modern thead th {
         background: var(--gradient-primary);
         color: white;
@@ -330,16 +330,16 @@
         letter-spacing: 1px;
         font-size: 0.85rem;
     }
-    
+
     .table-modern tbody tr {
         transition: all 0.3s ease;
     }
-    
+
     .table-modern tbody tr:hover {
         background: rgba(74, 108, 247, 0.05);
         transform: scale(1.01);
     }
-    
+
     /* Boutons améliorés */
     .btn-modern {
         border: none;
@@ -350,7 +350,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .btn-modern::before {
         content: '';
         position: absolute;
@@ -361,27 +361,27 @@
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         transition: left 0.5s;
     }
-    
+
     .btn-modern:hover::before {
         left: 100%;
     }
-    
+
     .btn-primary-modern {
         background: var(--gradient-primary);
         box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
     }
-    
+
     .btn-primary-modern:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(74, 108, 247, 0.4);
     }
-    
+
     /* Timeline médicale */
     .medical-timeline {
         position: relative;
         padding-left: 2rem;
     }
-    
+
     .medical-timeline::before {
         content: '';
         position: absolute;
@@ -392,14 +392,14 @@
         background: var(--primary-color);
         border-radius: 2px;
     }
-    
+
     .timeline-item {
         position: relative;
         margin-bottom: 2rem;
         padding-left: 2rem;
         animation: fadeInUp 0.5s ease-out;
     }
-    
+
     .timeline-item::before {
         content: '';
         position: absolute;
@@ -412,12 +412,12 @@
         border: 4px solid white;
         box-shadow: var(--shadow-light);
     }
-    
+
     .timeline-item.consultation::before { background: var(--info-color); }
     .timeline-item.hospitalization::before { background: var(--warning-color); }
     .timeline-item.appointment::before { background: var(--success-color); }
     .timeline-item.prescription::before { background: var(--danger-color); }
-    
+
     /* Alertes et notifications */
     .alert-modern {
         border: none;
@@ -426,22 +426,22 @@
         box-shadow: var(--shadow-light);
         border-left: 5px solid;
     }
-    
+
     .alert-success-modern {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         border-left-color: var(--success-color);
     }
-    
+
     .alert-warning-modern {
         background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
         border-left-color: var(--warning-color);
     }
-    
+
     .alert-danger-modern {
         background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%);
         border-left-color: var(--danger-color);
     }
-    
+
     /* Widgets d'information */
     .info-widget {
         background: white;
@@ -451,18 +451,18 @@
         margin-bottom: 1.5rem;
         transition: all 0.3s ease;
     }
-    
+
     .info-widget:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow-medium);
     }
-    
+
     .info-widget-header {
         display: flex;
         align-items: center;
         margin-bottom: 1rem;
     }
-    
+
     .info-widget-icon {
         width: 50px;
         height: 50px;
@@ -474,43 +474,43 @@
         font-size: 1.5rem;
         color: white;
     }
-    
+
     /* Responsive design amélioré */
     @media (max-width: 768px) {
         .stats-grid {
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         }
-        
+
         .nav-tabs-modern .nav-link {
             padding: 0.75rem 1rem;
             font-size: 0.9rem;
         }
-        
+
         .profile-header {
             text-align: center;
         }
-        
+
         .patient-title::before {
             display: none;
         }
     }
-    
+
     /* Éléments interactifs */
     .interactive-element {
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .interactive-element:hover {
         transform: scale(1.02);
     }
-    
+
     /* Loading states */
     .loading {
         position: relative;
         overflow: hidden;
     }
-    
+
     .loading::after {
         content: '';
         position: absolute;
@@ -521,7 +521,7 @@
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
         animation: loading 1.5s infinite;
     }
-    
+
     @keyframes loading {
         0% { left: -100%; }
         100% { left: 100%; }
@@ -531,7 +531,7 @@
 <div class="nk-content nk-content-fluid patient-dashboard">
     <div class="container-xl wide-lg">
         <div class="nk-content-body">
-            
+
             <!-- En-tête du patient avec statistiques -->
             <div class="profile-header p-4 mb-4">
                 <div class="row align-items-center">
@@ -542,7 +542,7 @@
                                     <img src="{{ patientsdetail.qr_code.url }}" width="120" alt="QR Code" class="img-fluid">
                                 </div>
                             {% endif %}
-                            
+
                             <div class="flex-grow-1">
                                 <h1 class="patient-title mb-2">
                                     {{ patientsdetail.nom }} {{ patientsdetail.prenoms }}
@@ -570,7 +570,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-4 text-lg-right">
                         <div class="patient-actions">
                             <button class="btn btn-light btn-modern mr-2 print-btn">
@@ -651,7 +651,7 @@
 
             <!-- Contenu des onglets -->
             <div class="tab-content-modern">
-                
+
                 <!-- Onglet Vue d'ensemble -->
                 <div class="tab-pane fade show active" id="tabOverview">
                     <div class="row">
@@ -813,30 +813,30 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des composants
     initPatientDashboard();
-    
+
     function initPatientDashboard() {
         // Animation au scroll
         initScrollAnimations();
-        
+
         // Interactions des cartes
         initCardInteractions();
-        
+
         // Graphiques
         initHealthCharts();
-        
+
         // Gestion des onglets
         initTabAnimations();
-        
+
         // Tooltips et popovers
         initTooltips();
     }
-    
+
     function initScrollAnimations() {
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -845,24 +845,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }, observerOptions);
-        
+
         document.querySelectorAll('.medical-card, .stat-card, .info-widget').forEach(el => {
             observer.observe(el);
         });
     }
-    
+
     function initCardInteractions() {
         // Hover effects
         document.querySelectorAll('.interactive-element').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
             });
-            
+
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
             });
         });
-        
+
         // Click animations
         document.querySelectorAll('.btn-modern').forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -874,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
     function initHealthCharts() {
         // Exemple de graphique avec Chart.js ou ApexCharts
         if (typeof ApexCharts !== 'undefined') {
@@ -914,24 +914,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     theme: 'light'
                 }
             };
-            
+
             const chart = new ApexCharts(document.querySelector("#healthChart"), options);
             chart.render();
         }
     }
-    
+
     function initTabAnimations() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             const target = $(e.target).attr("href");
             $(target).addClass('animate__animated animate__fadeIn');
-            
+
             // Réinitialiser l'animation pour la prochaine ouverture
             setTimeout(() => {
                 $(target).removeClass('animate__animated animate__fadeIn');
             }, 500);
         });
     }
-    
+
     function initTooltips() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover',
@@ -939,7 +939,7 @@ document.addEventListener('DOMContentLoaded', function() {
             animation: true
         });
     }
-    
+
     // Gestion de l'impression
     $('.print-btn').click(function() {
         $('.patient-dashboard').addClass('printing');
@@ -948,7 +948,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $('.patient-dashboard').removeClass('printing');
         }, 500);
     });
-    
+
     // Simulation de données en temps réel
     function updateRealTimeStats() {
         // Cette fonction pourrait être connectée à des WebSockets
@@ -963,7 +963,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }, 30000); // Toutes les 30 secondes
     }
-    
+
     function animateValue(element, start, end, duration) {
         let startTimestamp = null;
         const step = (timestamp) => {
@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         window.requestAnimationFrame(step);
     }
-    
+
     // Démarrer les mises à jour en temps réel
     updateRealTimeStats();
 });

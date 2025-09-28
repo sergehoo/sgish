@@ -1,7 +1,7 @@
 FROM python:3.9-slim
 LABEL authors="ogahserge"
 
-WORKDIR /smitci-app
+WORKDIR /chu-app
 
 # ---- venv
 ENV VIRTUAL_ENV=/opt/venv
@@ -33,7 +33,7 @@ ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
 
 # ---- pip + deps projet
 RUN pip install --upgrade pip
-COPY requirements.txt /smitci-app/requirements.txt
+COPY requirements.txt /chu-app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ⚠️ (Optionnel) torch & co → à mettre plutôt dans l'image worker
@@ -57,14 +57,14 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 8000
 # ❌ Retirer CMD pour éviter les conflits avec `command:` dans compose
-# CMD ["gunicorn", "smitci.wsgi:application", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
+# CMD ["gunicorn", "chuci.wsgi:application", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
 
 
 
 #FROM python:3.9-slim
 #LABEL authors="ogahserge"
 #
-#WORKDIR /smitci-app
+#WORKDIR /chuci-app
 #
 ## ---- venv
 #ENV VIRTUAL_ENV=/opt/venv
@@ -108,11 +108,11 @@ EXPOSE 8000
 #RUN pip install --upgrade pip
 #
 ## ---- deps Python
-#COPY requirements.txt /smitci-app/requirements.txt
+#COPY requirements.txt /chuci-app/requirements.txt
 #RUN pip install --no-cache-dir -r requirements.txt
 #
 ## ---- code
-#COPY . /smitci-app/
+#COPY . /chuci-app/
 #
 ## Client psql (utile pour mgts/backup)
 #RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client \
@@ -123,4 +123,4 @@ EXPOSE 8000
 ## RUN apt-get purge -y gcc python3-dev libgdal-dev libpq-dev libffi-dev && apt-get autoremove -y
 #
 #EXPOSE 8000
-#CMD ["gunicorn", "smitci.wsgi:application", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
+#CMD ["gunicorn", "chuci.wsgi:application", "--bind=0.0.0.0:8000", "--workers=4", "--timeout=180", "--log-level=debug"]
