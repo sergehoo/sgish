@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="087d2814-3cad-4049-abc4-eba10f1f379b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/entrypoint.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/images/chu_cocody.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smitci/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/smitci/settings/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smitci/settings/dev.py" beforeDir="false" afterPath="$PROJECT_DIR$/smitci/settings/dev.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smitci/settings/prod.py" beforeDir="false" afterPath="$PROJECT_DIR$/smitci/settings/prod.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout/aside.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout/aside.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pages/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pages/hospitalisation/hospitalisation_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pages/hospitalisation/hospitalisation_details.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,9 +25,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="HTML File" />
         <option value="JavaScript File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -35,7 +42,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/sergehoo/smit.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/sergehoo/sgish.git&quot;,
     &quot;accountId&quot;: &quot;041d5e79-3e5a-427b-ae58-f762b8b03d62&quot;
   }
 }</component>
@@ -276,7 +283,10 @@
       <workItem from="1755531238491" duration="1536000" />
       <workItem from="1755733265540" duration="2472000" />
       <workItem from="1756221098675" duration="12635000" />
-      <workItem from="1756932574404" duration="33443000" />
+      <workItem from="1756932574404" duration="39781000" />
+      <workItem from="1757900861151" duration="598000" />
+      <workItem from="1758293535079" duration="15214000" />
+      <workItem from="1759060314355" duration="5967000" />
     </task>
     <servers />
   </component>

@@ -1,8 +1,8 @@
 networks:
-  smitci_network:
+  chu_network:
     driver: bridge
   proxy:
-    external: true   # réseau Traefik (uniquement pour smitweb/adminer)
+    external: true   # réseau Traefik (uniquement pour chuweb/adminer)
 
 volumes:
   pgdata:
@@ -10,7 +10,7 @@ volumes:
   media_volume:
 
 services:
-  smitDB:
+  chuDB:
     image: postgis/postgis:16-3.4
     restart: unless-stopped
     environment:
@@ -20,7 +20,7 @@ services:
       PG_DATA: /data
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks: [smitci_network]   # ← plus de proxy ici
+    networks: [chu_network]   # ← plus de proxy ici
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB || exit 1"]
       interval: 10s
@@ -31,19 +31,19 @@ services:
     image: redis:7
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec", "--save", "900 1"]
-    networks: [smitci_network]   # ← plus de proxy ici
+    networks: [chu_network]   # ← plus de proxy ici
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -h 127.0.0.1 ping | grep PONG >/dev/null 2>&1 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
 
-  smitweb:
+  chuweb:
     build:
       context: .
       dockerfile: Dockerfile
     command: >
-      gunicorn smitci.wsgi:application
+      gunicorn chu.wsgi:application
       --bind 0.0.0.0:8000
       --workers 2 --threads 2
       --timeout 60
@@ -53,16 +53,16 @@ services:
       RUN_MIGRATIONS: "1"
       RUN_COLLECTSTATIC: "1"
     volumes:
-      - .:/smitci-app
-      - static_volume:/smitci-app/static
-      - media_volume:/smitci-app/media
+      - .:/chu-app
+      - static_volume:/chu-app/static
+      - media_volume:/chu-app/media
     depends_on:
-      smitDB:
+      chuDB:
         condition: service_healthy
       redis:
         condition: service_healthy
     restart: unless-stopped
-    networks: [smitci_network, proxy]
+    networks: [chu_network, proxy]
     healthcheck:
       test: ["CMD-SHELL", "python - <<'PY'\nimport urllib.request,sys\ntry:\n  urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)\n  sys.exit(0)\nexcept Exception:\n  sys.exit(1)\nPY"]
       interval: 10s
@@ -73,21 +73,21 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy
       # Router HTTPS
-      - traefik.http.routers.smitci.rule=Host(`smitci.com`)
-      - traefik.http.routers.smitci.entrypoints=websecure
-      - traefik.http.routers.smitci.tls.certresolver=lets
+      - traefik.http.routers.chu.rule=Host(`afriqconsulting.store`)
+      - traefik.http.routers.chu.entrypoints=websecure
+      - traefik.http.routers.chu.tls.certresolver=lets
       # Service (port interne)
-      - traefik.http.services.smitci.loadbalancer.server.port=8000
-      - traefik.http.services.smitci.loadbalancer.server.scheme=http
+      - traefik.http.services.chu.loadbalancer.server.port=8000
+      - traefik.http.services.chu.loadbalancer.server.scheme=http
       # Middlewares (doivent exister côté Traefik)
-      - traefik.http.routers.smitci.middlewares=sec-headers@docker,compress@docker,ratelimit@docker
+      - traefik.http.routers.chu.middlewares=sec-headers@docker,compress@docker,ratelimit@docker
 
   celeryworker:
     build:
       context: .
       dockerfile: Dockerfile
     command: >
-      celery -A smitci worker
+      celery -A chu worker
       --loglevel=warning
       --concurrency=1 --autoscale=2,1
       --prefetch-multiplier=1 -Ofair
@@ -95,55 +95,55 @@ services:
       --without-gossip --without-mingle
     env_file: [.env]
     volumes:
-      - .:/smitci-app
+      - .:/chu-app
     depends_on:
-      smitDB:
+      chuDB:
         condition: service_healthy
       redis:
         condition: service_healthy
     restart: unless-stopped
-    networks: [smitci_network]
+    networks: [chu_network]
 
   celerybeat:
     build:
       context: .
       dockerfile: Dockerfile
     command: >
-      celery -A smitci beat
+      celery -A chu beat
       --loglevel=warning
       --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file: [.env]
     volumes:
-      - .:/smitci-app
+      - .:/chu-app
     depends_on:
-      smitDB:
+      chuDB:
         condition: service_healthy
       redis:
         condition: service_healthy
     restart: unless-stopped
-    networks: [smitci_network]
+    networks: [chu_network]
 
-  smitadminer:
+  chuadminer:
     profiles: ["admin"]   # lancer au besoin
     image: adminer
     restart: unless-stopped
     environment:
-      ADMINER_DEFAULT_SERVER: smitDB
+      ADMINER_DEFAULT_SERVER: chuDB
     depends_on:
-      smitDB:
+      chuDB:
         condition: service_healthy
-    networks: [smitci_network, proxy]
+    networks: [chu_network, proxy]
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      - traefik.http.routers.smitadminer.rule=Host(`adminer.smitci.com`)
-      - traefik.http.routers.smitadminer.entrypoints=websecure
-      - traefik.http.routers.smitadminer.tls.certresolver=lets
-      - traefik.http.services.smitadminer.loadbalancer.server.port=8080
-      - traefik.http.services.smitadminer.loadbalancer.server.scheme=http
-      - traefik.http.routers.smitadminer.middlewares=traefik-auth@docker,sec-headers@docker,compress@docker,ratelimit@docker
+      - traefik.http.routers.chuadminer.rule=Host(`adminer.chu.com`)
+      - traefik.http.routers.chuadminer.entrypoints=websecure
+      - traefik.http.routers.chuadminer.tls.certresolver=lets
+      - traefik.http.services.chuadminer.loadbalancer.server.port=8080
+      - traefik.http.services.chuadminer.loadbalancer.server.scheme=http
+      - traefik.http.routers.chuadminer.middlewares=traefik-auth@docker,sec-headers@docker,compress@docker,ratelimit@docker
 #networks:
-#  smitci_network:
+#  chu_network:
 #    driver: bridge
 #
 #volumes:
@@ -153,7 +153,7 @@ services:
 #  logs_volume:
 #
 #services:
-#  smitDB:
+#  chuDB:
 #    image: postgis/postgis:16-3.4
 #    restart: always
 #    environment:
@@ -163,7 +163,7 @@ services:
 #      PG_DATA: /data
 #    volumes:
 #      - pgdata:/var/lib/postgresql/data
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    healthcheck:
 #      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
 #      interval: 10s
@@ -175,11 +175,11 @@ services:
 #
 #  redis:
 #    image: redis:7
-#    container_name: smit_redis
+#    container_name: chu_redis
 #    restart: always
 #    ports:
 #      - "6388:6379"
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    healthcheck:
 #      test: ["CMD", "redis-cli", "ping"]
 #      interval: 10s
@@ -188,13 +188,13 @@ services:
 #    cpus: "0.20"
 #    mem_limit: "256m"
 #
-#  smitweb:
+#  chuweb:
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
 #    # Réduit le coût Gunicorn (2 workers / 2 threads)
 #    command: >
-#      gunicorn smitci.wsgi:application
+#      gunicorn chu.wsgi:application
 #      --bind 0.0.0.0:8000
 #      --workers 2 --threads 2
 #      --timeout 60
@@ -202,18 +202,18 @@ services:
 #    ports:
 #      - "1909:8000"
 #    volumes:
-#      - .:/smitci-app
-#      - static_volume:/smitci-app/static
-#      - media_volume:/smitci-app/media
+#      - .:/chu-app
+#      - static_volume:/chu-app/static
+#      - media_volume:/chu-app/media
 #      - logs_volume:/var/log/app
 #    env_file: [.env]
 #    restart: always
 #    depends_on:
-#      smitDB:
+#      chuDB:
 #        condition: service_healthy
 #      redis:
 #        condition: service_healthy
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    cpus: "0.80"
 #    mem_limit: "2024m"
 #
@@ -221,24 +221,24 @@ services:
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
-#    container_name: smit_celery_worker
+#    container_name: chu_celery_worker
 #    command: >
-#      celery -A smitci worker
+#      celery -A chu worker
 #      --loglevel=warning
 #      --concurrency=1 --autoscale=2,1
 #      --prefetch-multiplier=1 -Ofair
 #      --max-tasks-per-child=100
 #      --without-gossip --without-mingle
 #    volumes:
-#      - .:/smitci-app
+#      - .:/chu-app
 #    env_file: [.env]
 #    restart: always
 #    depends_on:
-#      smitDB:
+#      chuDB:
 #        condition: service_healthy
 #      redis:
 #        condition: service_healthy
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    cpus: "0.60"
 #    mem_limit: "768m"
 #
@@ -246,35 +246,35 @@ services:
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
-#    container_name: smit_celery_beat
+#    container_name: chu_celery_beat
 #    command: >
-#      celery -A smitci beat
+#      celery -A chu beat
 #      --loglevel=warning
 #      --scheduler django_celery_beat.schedulers:DatabaseScheduler
 #    volumes:
-#      - .:/smitci-app
+#      - .:/chu-app
 #    env_file: [.env]
 #    restart: always
 #    depends_on:
-#      smitDB:
+#      chuDB:
 #        condition: service_healthy
 #      redis:
 #        condition: service_healthy
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    cpus: "0.30"
 #    mem_limit: "512m"
 #
-#  smitadminer:
+#  chuadminer:
 #    image: adminer
 #    restart: always
 #    ports:
 #      - "1910:8080"
 #    environment:
-#      ADMINER_DEFAULT_SERVER: smitDB
+#      ADMINER_DEFAULT_SERVER: chuDB
 #    depends_on:
-#      smitDB:
+#      chuDB:
 #        condition: service_healthy
-#    networks: [smitci_network]
+#    networks: [chu_network]
 #    cpus: "0.10"
 #    mem_limit: "128m"
 #

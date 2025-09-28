@@ -33,9 +33,9 @@
             <div class="nk-content-body">
 
                 <div class="nk-block-head nk-block-head-sm ">
-                
+
                 <div class="row rounded card-bordered mt-5 p-3 d-flex align-items-center" style="background-color: white; background-image: url('{% static 'images/hospitalizadtion.png' %}'); background-size: cover; background-position: center;">
-    
+
     <!-- Colonne : Informations du patient -->
     <div class="col-lg-6 col-md-6 col-sm-6 d-flex flex-column justify-content-center">
         <h3 class="nk-block-title page-title text-lg-right text-center text-dark">Détails Hospitalisation Patient</h3>
@@ -102,7 +102,7 @@
         {% endif %}
     </div>
 </div>
-                   
+
                     <div class="row pl-4 pb-4">
                         <div class="mt-2 col-md-12 text-end">
                             <ul class="nav m-0 p-0 text-end">
@@ -2605,7 +2605,7 @@
                                         <input type="hidden" name="execution_id" value="{{ execution.id }}">
                                         <button type="submit" class="btn btn-primary btn-sm">Marquer comme pris</button>
                                     </form>
-                                
+
                                 {% else %}
                                     <button class="btn btn-secondary btn-sm" disabled>Inactif</button>
                                 {% endif %}
@@ -2761,7 +2761,7 @@
                                                                 <td>
                                                                     <span>{{ prescription.created_by.user.get_full_name }}</span>
                                                                 </td>
-                                                                <td> 
+                                                                <td>
                                                                     {% if prescription.status == "Pending" %}
                                                                     <form method="post" action="{% url 'delete_prescription' prescription.id %}" style="display:inline;">
         {% csrf_token %}
@@ -2771,7 +2771,7 @@
     </form>
                                                                     {% endif %}
                                                                    <form method="post" action="{% url 'stop_traitement' prescription.id %}" style="display:inline;">
-                                                                       
+
     {% csrf_token %}
     <button type="button" class="btn btn-primary btn-icon btn-round btn-xs ml-2"
             onclick="askCancellationReason(event, this)">
@@ -3004,14 +3004,14 @@ function askCancellationReason(event, button) {
                                         </div>
                                         <div class="col-6">
                                             <div id="chart-examens-type"></div>
-                                            
-                                              
-    
+
+
+
                                         </div>
                                         <div class="col-6"><div id="chart-status-examens"></div> </div>
                                         <div class="col-6"><div id="chart-examens-jour"></div> </div>
                                         <div class="col-6"><div id="chart-resultats-examens"></div> </div>
-                                        
+
                                     </div>
 
 
@@ -3137,7 +3137,7 @@ function askCancellationReason(event, button) {
                                         </div>
                                     </div><!-- Indicateurs  de Traitement  -->
 
-                           
+
                         </div>
                     <!-- .card-inner-group -->
                     </div><!-- .card -->

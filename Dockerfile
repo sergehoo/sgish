@@ -48,7 +48,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # PY
 
 # ---- code
-COPY . /smitci-app/
+COPY . /chu-app/
 
 # ---- entrypoint
 COPY entrypoint.sh /entrypoint.sh

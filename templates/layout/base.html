@@ -3,415 +3,769 @@
 
 <!DOCTYPE html>
 <html lang="fr-FR" class="js">
-
 <head>
-    <base href="../">
+    {# <base href="../"> #}
     <meta charset="utf-8">
     <meta name="author" content="Afriq Consulting">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="KENEYA, système de gestion des hôpitaux pour une gestion efficace des ressources hospitalières.">
     <meta name="keywords" content="KENEYA, SMIT, gestion des hôpitaux, santé, Afriq Consulting, hospital management, ressources hospitalières, consultations, hospitalisations, gestion médicale">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#3b5d92">
-    <meta property="og:title" content="KENEYA - SMIT | Hospital Resources Management">
+    <meta name="theme-color" content="#0ea5e9">
+    <meta property="og:title" content="KENEYA - SIH | Systeme d'Information Hospialier">
     <meta property="og:description" content="Système complet pour la gestion des ressources hospitalières, conçu pour simplifier les opérations de santé.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://smitci.com"> <!-- Remplacez par votre URL -->
+    <meta property="og:url" content="https://sihci.com">
     <meta property="og:image" content="{% static 'images/keneya_preview.png' %}">
     <meta property="og:locale" content="fr_FR">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="KENEYA - SMIT | Hospital Resources Management">
+    <meta name="twitter:title" content="KENEYA - SIH | Hospital Resources Management">
     <meta name="twitter:description" content="Optimisez la gestion des ressources hospitalières avec KENEYA, développé par Afriq Consulting.">
     <meta name="twitter:image" content="{% static 'images/keneya_preview.png' %}">
-    
-    <!-- Fav Icon  -->
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
-    <!-- Page Title  -->
-    <title>SMIT | KENEYA- Hospital Ressources Management</title>
-    <!-- StyleSheets  -->
-    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <title>SMIT | KENEYA - Hospital Ressources Management</title>
+
+    <!-- Tailwind CSS (pour utilitaires UI) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'hospital': {
+                50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+                500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e',
+              }
+            },
+            fontFamily: { 'sans': ['Inter','system-ui','sans-serif'] },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+              'bounce-gentle': 'bounce 1s ease-in-out infinite',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Icônes / Thèmes DashLite (inclut Bootstrap 4 + jQuery dans bundle.js plus bas) -->
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/dashlite.css' %}">
     <link id="skin-default" rel="stylesheet" href="{% static 'assets/css/theme.css' %}">
+
+    <!-- Libs graphiques + TinyMCE + Alpine -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-{#    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />#}
 
-<!-- Bootstrap 5 CSS -->
-{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+    <style>
+      /* === Palette et styles globaux === */
+      :root{
+        --hospital-blue:#0ea5e9;--hospital-blue-dark:#0369a1;--hospital-blue-light:#e0f2fe;
+        --medical-teal:#14b8a6;--success-green:#10b981;--warning-orange:#f59e0b;
+        --error-red:#ef4444;--gray-light:#f8fafc;--gray-dark:#1e293b;
+      }
+      .nk-body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);min-height:100vh;}
 
-<!-- Bootstrap 5 JS -->
-<style>
-    /* Header Animation Styles */
-    .nk-header {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-    }
-    
-    .nk-header.scrolled {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-        background: rgba(255, 255, 255, 0.98);
-    }
-    
-    .logo-container {
-        position: relative;
-        display: inline-block;
-        padding: 5px;
-    }
-    
-    .logo-img {
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        position: relative;
-        z-index: 2;
-        height: 40px;
-        width: auto;
-    }
-    
-    .logo-link:hover .logo-img {
-        transform: scale(1.05);
-    }
-    
-    .logo-pulse {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(74, 108, 247, 0.1);
-        border-radius: 50%;
-        z-index: 1;
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    
-    .logo-link:hover .logo-pulse {
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% {
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-        70% {
-            transform: scale(1.2);
-            opacity: 0;
-        }
-        100% {
-            transform: scale(0.8);
-            opacity: 0;
-        }
-    }
-    
-    .header-notif-animate {
-        animation: slideInRight 0.5s ease-out forwards;
-    }
-    
-    .header-user-animate {
-        animation: fadeIn 0.6s ease-out 0.2s forwards;
-        opacity: 0;
-    }
-    
-    @keyframes slideInRight {
-        from {
-            transform: translateX(20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    
-    /* Notification Bell Animation */
-    .notification-bell {
-        position: relative;
-    }
-    
-    .notification-bell .icon {
-        transition: transform 0.3s ease;
-    }
-    
-    .notification-bell:hover .icon {
-        transform: rotate(15deg);
-        animation: bellRing 0.5s ease-in-out infinite alternate;
-    }
-    
-    @keyframes bellRing {
-        0%, 100% {
-            transform: rotate(0);
-        }
-        25% {
-            transform: rotate(10deg);
-        }
-        50% {
-            transform: rotate(-10deg);
-        }
-        75% {
-            transform: rotate(5deg);
-        }
-    }
-    
-    .notification-badge {
-        animation: pulseBadge 2s infinite;
-    }
-    
-    @keyframes pulseBadge {
-        0% {
-            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
-        }
-        70% {
-            box-shadow: 0 0 0 8px rgba(255, 59, 48, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
-        }
-    }
-</style>
-    
-    
+      /* Header (sans backdrop-filter) */
+      .nk-header{
+        background:linear-gradient(135deg,var(--hospital-blue) 0%,var(--hospital-blue-dark) 100%);
+        box-shadow:0 4px 20px rgba(14,165,233,0.15);border:none;
+        transition:all .3s cubic-bezier(.4,0,.2,1);
+      }
+      .nk-header.scrolled{box-shadow:0 8px 25px rgba(14,165,233,.2);}
+      .logo-container{background:rgba(255,255,255,.1);border-radius:12px;padding:8px;border:1px solid rgba(255,255,255,.2);}
+      .logo-img{transition:all .3s ease;height:40px;filter:brightness(0) invert(1);}
 
+      /* Sidebar */
+      .nk-sidebar{background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);border-right:1px solid #e2e8f0;box-shadow:2px 0 10px rgba(0,0,0,.05);}
+      .nk-sidebar-head{background:linear-gradient(135deg,var(--hospital-blue) 0%,var(--hospital-blue-dark) 100%);border-bottom:1px solid rgba(255,255,255,.1);}
+      .nk-menu-item{margin:2px 8px;}
+      .nk-menu-link{
+        border-radius:10px;transition:all .3s cubic-bezier(.4,0,.2,1);
+        border-left:4px solid transparent;position:relative;overflow:hidden;
+      }
+      .nk-menu-link::before{
+        content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+        background:linear-gradient(90deg,transparent,rgba(14,165,233,.1),transparent);
+        transition:left .5s;
+      }
+      .nk-menu-link:hover::before{left:100%;}
+      .nk-menu-link:hover{background:var(--hospital-blue-light);transform:translateX(4px);border-left-color:var(--hospital-blue);}
+      .nk-menu-link.active{
+        background:linear-gradient(135deg,var(--hospital-blue) 0%,var(--hospital-blue-dark) 100%);
+        color:#fff;box-shadow:0 4px 12px rgba(14,165,233,.3);border-left-color:#fff;
+      }
+      .nk-menu-link.active .medical-icon{background:rgba(255,255,255,.2);color:#fff;}
+      .medical-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s ease;}
+
+      /* Cards */
+      {#.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);border:1px solid #f1f5f9;transition:all .3s ease;}#}
+      {#.card:hover{box-shadow:0 8px 25px rgba(14,165,233,.15);transform:translateY(-2px);}#}
+      {#.card-header{background:linear-gradient(135deg,var(--hospital-blue) 0%,var(--hospital-blue-dark) 100%);color:#fff;border-radius:12px 12px 0 0;padding:16px 20px;border:none;}#}
+      {##}
+      {#/* Boutons */#}
+      {#.btn-hospital{background:linear-gradient(135deg,var(--hospital-blue) 0%,var(--hospital-blue-dark) 100%);border:none;border-radius:8px;padding:10px 20px;font-weight:600;color:#fff;transition:all .3s ease;}#}
+      {#.btn-hospital:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,233,.4);}#}
+
+      /* Badges */
+      .badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+      .badge-primary{background:var(--hospital-blue-light);color:var(--hospital-blue-dark);}
+      .badge-success{background:#dcfce7;color:#166534;}
+      .badge-warning{background:#fef3c7;color:#92400e;}
+      .badge-error{background:#fee2e2;color:#dc2626;}
+      .badge-pulse{animation:pulse 2s infinite;}
+
+      /* Animations */
+      @keyframes slideIn{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);}}
+      @keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+      .animate-slide-in{animation:slideIn .5s ease-out;}
+      .animate-fade-in-up{animation:fadeInUp .6s ease-out;}
+
+      /* Tableaux */
+      .table-medical{border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+      .table-medical thead th{background:#f8fafc;color:var(--hospital-blue-dark);font-weight:600;border-bottom:2px solid #e2e8f0;padding:12px 16px;}
+      .table-medical tbody tr{transition:background .2s ease;}
+      .table-medical tbody tr:hover{background:var(--hospital-blue-light);}
+
+      /* Formulaires */
+      .form-control{border:1px solid #d1d5db;border-radius:8px;padding:10px 12px;transition:all .3s ease;}
+      .form-control:focus{border-color:var(--hospital-blue);box-shadow:0 0 0 3px rgba(14,165,233,.1);outline:none;}
+
+      /* Footer */
+      .nk-footer{background:var(--gray-dark);color:#cbd5e1;border-top:1px solid #334155;}
+
+      /* Responsive */
+      @media (max-width:768px){
+        .nk-header{padding:10px 0;}
+        .logo-img{height:35px;}
+        .card{margin-bottom:16px;}
+        .nk-menu-link{margin:1px 4px;}
+      }
+
+      /* === Corrections spécifiques Modals (Bootstrap 4) === */
+      .nk-header,.logo-container,.modal-backdrop,.modal-content{backdrop-filter:none!important;}
+      .modal{z-index:1050!important;}
+      .modal-backdrop{z-index:1040!important;background-color:rgba(0,0,0,.5)!important;}
+
+      body.modal-open{overflow:hidden;padding-right:0!important;}
+      body.modal-open .nk-header, body.modal-open .nk-sidebar{transition:none!important;transform:none!important;}
+
+      .modal.fade .modal-dialog{transition:transform .3s ease-out;transform:translate(0,-50px);}
+      .modal.show .modal-dialog{transform:none;}
+      .modal-backdrop.fade{opacity:0;}
+      .modal-backdrop.show{opacity:.5;}
+
+      /* Pas d'isolation pour éviter un nouveau stacking context */
+      /* (important pour que backdrop et modal dominent correctement) */
+
+      /* Désactivation temporaire d’animations custom pendant modal ouverte */
+      .modal-open .animate-slide-in,
+      .modal-open .animate-fade-in-up{animation:none!important;opacity:1!important;transform:none!important;}
+
+      html{scroll-behavior:auto;}
+
+      /* Loading shimmer utilitaire */
+      .loading-state{position:relative;overflow:hidden;}
+      .loading-state::after{
+        content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+        background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+        animation:loading 1.5s infinite;
+      }
+      @keyframes loading{0%{left:-100%;}100%{left:100%;}}
+
+      .modal,.modal-backdrop,.nk-header,.nk-sidebar{will-change:auto!important;backface-visibility:visible!important;}
+
+      *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+
+      .modal-content{transform:translateZ(0);-webkit-transform:translateZ(0);border:none;box-shadow:0 10px 30px rgba(0,0,0,.2);}
+
+      .fixed-header-fix{position:fixed;width:100%;top:0;z-index:1030;}
+
+      body{background-color:#f8fafc;}
+    </style>
+
+    <!-- TinyMCE (sans skin custom pour éviter 404 silencieuse) -->
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            height: auto,
-            width: auto,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-            ],
-            toolbar: 'undo redo | formatselect | bold italic backcolor | \
-                      alignleft aligncenter alignright alignjustify | \
-                      bullist numlist outdent indent | removeformat | help'
-        });
+      tinymce.init({
+        selector: 'textarea',
+        height: 400,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | bold italic backcolor | ' +
+                 'alignleft aligncenter alignright alignjustify | ' +
+                 'bullist numlist outdent indent | removeformat | help'
+        // skin: 'hospital',        // retiré (à remettre uniquement si le skin existe)
+        // content_css: 'hospital'  // retiré (à remettre uniquement si le CSS existe)
+      });
     </script>
     {% unicorn_scripts %}
 </head>
 
-<body class="nk-body bg-white has-sidebar ">
-<div class="nk-app-root">
-    <!-- main @s -->
-    <div class="nk-main ">
-        <!-- sidebar @s -->
-        {% include 'layout/aside.html' %}
-        <!-- sidebar @e -->
-        <!-- wrap @s -->
-        <div class="nk-wrap ">
-            <!-- main header @s -->
-            <div class="nk-header nk-header-fixed is-light">
-                <div class="container-fluid">
-                    <div class="nk-header-wrap">
+<body class="nk-body">
+  <div class="nk-app-root">
+    <div class="nk-main">
+      <!-- Sidebar -->
+      {% include "layout/aside.html" %}
 
-                        <div class="nk-header-brand d-xl-none">
-                            <a href="#" class="logo-link">
-                                <img class="logo-light logo-img" src="{% static 'images/logokeneya260.png' %}"
-                                     srcset="{% static 'images/logokeneya260.png' %}" alt="logo">
-                                <img class="logo-dark logo-img" src="{% static 'images/logokeneya260.png' %}"
-                                     srcset="{% static 'images/logokeneya260.png' %}" alt="logo-dark">
-                            </a>
-                        </div><!-- .nk-header-brand -->
-                        {% include 'layout/notif_header.html' %}
-                        {#                           {% include 'layout/user_log.html' %}#}
-                    </div><!-- .nk-header-wrap -->
-                </div><!-- .container-fliud -->
+      <!-- Contenu Principal -->
+      <div class="nk-wrap">
+        <!-- Header -->
+        <div class="nk-header nk-header-fixed">
+          <div class="container-fluid">
+            <div class="nk-header-wrap flex items-center justify-between py-3">
+              <div class="nk-header-brand d-xl-none">
+                <a href="#" class="logo-link flex items-center">
+                  <div class="logo-container">
+                    <img class="logo-img" src="{% static 'images/logokeneya260.png' %}" alt="KENEYA">
+                  </div>
+                  <span class="ml-3 font-bold text-lg">CHU COCODY</span>
+                </a>
+              </div>
+
+              {% include 'layout/notif_header.html' %}
             </div>
-            <!-- main header @e -->
-            <!-- content @s -->
-            {% block content %}
-
-            {% endblock %}
-            <!-- content @e -->
-            <!-- footer @s -->
-            <div class="nk-footer">
-                <div class="container-fluid">
-                    <div class="nk-footer-wrap">
-                        <div class="nk-footer-copyright"> &copy; 2022 KENEYA by <a href="https://afriqconsulting.com" target="_blank">AFRIQCONSULTING</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- footer @e -->
+          </div>
         </div>
-        <!-- wrap @e -->
-    </div>
-    <!-- main @e -->
-</div>
-<!-- app-root @e -->
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'assets/js/bundle.js' %}"></script>
-<script src="{% static 'assets/js/scripts.js' %}"></script>
-<script src="{% static 'assets/js/charts/gd-default.js' %}"></script>
-{% if messages %}
+
+        <!-- Contenu -->
+        <div class="animate-fade-in-up mt-10">
+          {% block content %}
+          <!-- Le contenu spécifique à chaque page sera inséré ici -->
+          {% endblock %}
+        </div>
+
+        <!-- Footer -->
+        <div class="nk-footer">
+          <div class="container-fluid">
+            <div class="nk-footer-wrap flex flex-col md:flex-row items-center justify-between py-4">
+              <div class="nk-footer-copyright text-center md:text-left mb-3 md:mb-0">
+                &copy; 2022 KENEYA by
+                <a href="https://afriqconsulting.com" target="_blank" class="text-hospital-300 hover:text-white transition-colors">
+                  AFRIQCONSULTING
+                </a>
+              </div>
+              <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- .nk-wrap -->
+    </div><!-- .nk-main -->
+  </div><!-- .nk-app-root -->
+
+  <!-- ===== Scripts (un seul Bootstrap: via DashLite bundle) ===== -->
+  {# Bootstrap 5 retiré pour éviter conflit avec Bootstrap 4 de DashLite #}
+  <script src="{% static 'assets/js/bundle.js' %}"></script>
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  <script src="{% static 'assets/js/charts/gd-default.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Gestion des messages -->
+  {% if messages %}
     {% for message in messages %}
-        {% if message.tags == 'success' %}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    Swal.fire({
-                        title: "Félicitation ! ",
-                        text: " {{ message }}",
-                        icon: "success",
-
-                    })
-                });
-            </script>
-        {% elif message.tags == 'warning' %}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    Swal.fire({
-                        title: "Attention alert",
-                        text: " {{ message }}",
-                        icon: "warning",
-
-                    })
-                });
-            </script>
-        
-        {% elif message.tags == 'info' %}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    Swal.fire({
-                        title: "Information",
-                        text: " {{ message }}",
-                        icon: "info",
-
-                    })
-                });
-            </script>
-            
-        {% elif message.tags == 'error' %}
-            <script type="text/javascript">
-
-                $(document).ready(function () {
-                    Swal.fire({
-                        title: "Attention Erreur",
-                        text: " {{ message }}",
-                        icon: "error",
-
-                    })
-
-                });
-            </script>
-        {% endif %}
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const Toast = Swal.mixin({
+            toast: true, position: 'top-end', showConfirmButton: false,
+            timer: 5000, timerProgressBar: true, background: '#f8fafc',
+            iconColor: '{% if message.tags == "success" %}#10b981{% elif message.tags == "warning" %}#f59e0b{% elif message.tags == "error" %}#ef4444{% else %}#0ea5e9{% endif %}'
+          });
+          Toast.fire({ icon: '{{ message.tags }}', title: '{{ message|escapejs }}' });
+        });
+      </script>
     {% endfor %}
-{% endif %}
+  {% endif %}
 
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const darkSwitch = document.querySelector('.dark-switch');
-        const body = document.body;
-
-        // Check if the dark mode is enabled in localStorage
-        if (localStorage.getItem('dark-mode') === 'enabled') {
-            body.classList.add('dark-mode');
-        }
-
-        // Toggle dark mode
-        darkSwitch.addEventListener('click', () => {
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('dark-mode', 'disabled');
-            } else {
-                body.classList.add('dark-mode');
-                localStorage.setItem('dark-mode', 'enabled');
-            }
-        });
-    });
-</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script src="https://unpkg.com/htmx.org@1.9.2"></script>
-<script>
-    var input = document.querySelector("#phone");
-    var iti = window.intlTelInput(input, {
-        nationalMode: true,
-        initialCountry: "ci", // Set default to Côte d'Ivoire
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-</script>
-<script>
+  <!-- Scripts d'interaction -->
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const communeSelect = document.getElementById('id_commune');
-        const newCommuneGroup = document.getElementById('new_commune_group');
+      // Mode sombre
+      const darkSwitch = document.querySelector('.dark-switch');
+      const body = document.body;
+      if (localStorage.getItem('dark-mode') === 'enabled') { body.classList.add('dark-mode'); }
+      if (darkSwitch) {
+        darkSwitch.addEventListener('click', () => {
+          body.classList.toggle('dark-mode');
+          localStorage.setItem('dark-mode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+        });
+      }
 
+      // Effet de scroll sur le header
+      const header = document.querySelector('.nk-header');
+      window.addEventListener('scroll', () => {
+        if (!header) return;
+        header.classList.toggle('scrolled', window.scrollY > 10);
+      });
+
+      // Gestion des sous-menus
+      document.querySelectorAll('.nk-menu-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          const parent = this.closest('.nk-menu-item.has-sub');
+          if (!parent) return;
+          parent.classList.toggle('open');
+          const icon = this.querySelector('.icon');
+          if (icon) { icon.style.transform = parent.classList.contains('open') ? 'rotate(90deg)' : 'rotate(0deg)'; }
+        });
+      });
+
+      // Highlight automatique du menu actif
+      const currentPath = window.location.pathname;
+      document.querySelectorAll('.nk-menu-link[href]').forEach(link => {
+        if (link.getAttribute('href') === currentPath) { link.classList.add('active'); }
+      });
+    });
+
+    // International Telephone Input
+    document.addEventListener('DOMContentLoaded', function () {
+      const phoneInput = document.querySelector("#phone");
+      if (phoneInput && window.intlTelInput) {
+        window.intlTelInput(phoneInput, {
+          nationalMode: true, initialCountry: "ci",
+          utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+      }
+
+      // Gestion des formulaires dynamiques
+      const communeSelect = document.getElementById('id_commune');
+      const newCommuneGroup = document.getElementById('new_commune_group');
+      if (communeSelect && newCommuneGroup) {
         communeSelect.addEventListener('change', function () {
-            if (this.value === 'Autre') {
-                newCommuneGroup.style.display = 'block';  // Show the new commune field
-            } else {
-                newCommuneGroup.style.display = 'none';  // Hide the new commune field
-            }
+          newCommuneGroup.style.display = (this.value === 'Autre') ? 'block' : 'none';
         });
-
-        // Optional: Reset the form and hide new_commune when resetting
-        document.querySelector('button[type="reset"]').addEventListener('click', function () {
-            newCommuneGroup.style.display = 'none';
-        });
+      }
     });
-</script>
+  </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Header scroll effect
-        const header = document.querySelector('.nk-header');
-        
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 10) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Initialize GSAP animations
-        gsap.from(".logo-container", {
-            duration: 0.8,
-            y: -20,
-            opacity: 0,
-            ease: "back.out(1.7)"
-        });
-        
-        // Add animation to notification items (assuming they exist)
-        gsap.from(".notification-item", {
-            duration: 0.5,
-            x: 20,
-            opacity: 0,
-            stagger: 0.1,
-            delay: 0.3
-        });
-        
-        // Hover effect for logo
-        const logoLink = document.querySelector('.logo-link');
-        if (logoLink) {
-            logoLink.addEventListener('mouseenter', function() {
-                gsap.to(this.querySelector('.logo-img'), {
-                    duration: 0.3,
-                    scale: 1.05,
-                    ease: "power2.out"
-                });
-            });
-            
-            logoLink.addEventListener('mouseleave', function() {
-                gsap.to(this.querySelector('.logo-img'), {
-                    duration: 0.3,
-                    scale: 1,
-                    ease: "power2.out"
-                });
-            });
-        }
-    });
-</script>
+  <!-- Styles additionnels pour intl-tel-input -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 </body>
-
 </html>
+{#{% load static %}#}
+{#{% load unicorn %}#}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="fr-FR" class="js">#}
+{##}
+{#<head>#}
+{#    <base href="../">#}
+{#    <meta charset="utf-8">#}
+{#    <meta name="author" content="Afriq Consulting">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">#}
+{#    <meta name="description" content="KENEYA, système de gestion des hôpitaux pour une gestion efficace des ressources hospitalières.">#}
+{#    <meta name="keywords" content="KENEYA, SMIT, gestion des hôpitaux, santé, Afriq Consulting, hospital management, ressources hospitalières, consultations, hospitalisations, gestion médicale">#}
+{#    <meta name="robots" content="index, follow">#}
+{#    <meta name="theme-color" content="#3b5d92">#}
+{#    <meta property="og:title" content="KENEYA - SIH | Systeme d'Information Hospialier">#}
+{#    <meta property="og:description" content="Système complet pour la gestion des ressources hospitalières, conçu pour simplifier les opérations de santé.">#}
+{#    <meta property="og:type" content="website">#}
+{#    <meta property="og:url" content="https://sihci.com"> <!-- Remplacez par votre URL -->#}
+{#    <meta property="og:image" content="{% static 'images/keneya_preview.png' %}">#}
+{#    <meta property="og:locale" content="fr_FR">#}
+{#    <meta name="twitter:card" content="summary_large_image">#}
+{#    <meta name="twitter:title" content="KENEYA - SIH | Hospital Resources Management">#}
+{#    <meta name="twitter:description" content="Optimisez la gestion des ressources hospitalières avec KENEYA, développé par Afriq Consulting.">#}
+{#    <meta name="twitter:image" content="{% static 'images/keneya_preview.png' %}">#}
+{#    #}
+{#    <!-- Fav Icon  -->#}
+{#    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">#}
+{#    <!-- Page Title  -->#}
+{#    <title>SMIT | KENEYA- Hospital Ressources Management</title>#}
+{#    <!-- StyleSheets  -->#}
+{#    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">#}
+{#    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">#}
+{#    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">#}
+{#    <link rel="stylesheet" href="{% static 'assets/css/dashlite.css' %}">#}
+{#    <link id="skin-default" rel="stylesheet" href="{% static 'assets/css/theme.css' %}">#}
+{#    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>#}
+{#    <script src="{% static 'tinymce/tinymce.min.js' %}"></script>#}
+{#    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
+{#    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />#}
+{##}
+{#<!-- Bootstrap 5 CSS -->#}
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{##}
+{#<!-- Bootstrap 5 JS -->#}
+{#<style>#}
+{#    /* Header Animation Styles */#}
+{#    .nk-header {#}
+{#        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);#}
+{#        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);#}
+{#        background: rgba(255, 255, 255, 0.95);#}
+{#        backdrop-filter: blur(10px);#}
+{#    }#}
+{#    #}
+{#    .nk-header.scrolled {#}
+{#        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);#}
+{#        background: rgba(255, 255, 255, 0.98);#}
+{#    }#}
+{#    #}
+{#    .logo-container {#}
+{#        position: relative;#}
+{#        display: inline-block;#}
+{#        padding: 5px;#}
+{#    }#}
+{#    #}
+{#    .logo-img {#}
+{#        transition: transform 0.3s ease, opacity 0.3s ease;#}
+{#        position: relative;#}
+{#        z-index: 2;#}
+{#        height: 40px;#}
+{#        width: auto;#}
+{#    }#}
+{#    #}
+{#    .logo-link:hover .logo-img {#}
+{#        transform: scale(1.05);#}
+{#    }#}
+{#    #}
+{#    .logo-pulse {#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#        left: 0;#}
+{#        right: 0;#}
+{#        bottom: 0;#}
+{#        background: rgba(74, 108, 247, 0.1);#}
+{#        border-radius: 50%;#}
+{#        z-index: 1;#}
+{#        transform: scale(0.8);#}
+{#        opacity: 0;#}
+{#    }#}
+{#    #}
+{#    .logo-link:hover .logo-pulse {#}
+{#        animation: pulse 2s infinite;#}
+{#    }#}
+{#    #}
+{#    @keyframes pulse {#}
+{#        0% {#}
+{#            transform: scale(0.8);#}
+{#            opacity: 0.5;#}
+{#        }#}
+{#        70% {#}
+{#            transform: scale(1.2);#}
+{#            opacity: 0;#}
+{#        }#}
+{#        100% {#}
+{#            transform: scale(0.8);#}
+{#            opacity: 0;#}
+{#        }#}
+{#    }#}
+{#    #}
+{#    .header-notif-animate {#}
+{#        animation: slideInRight 0.5s ease-out forwards;#}
+{#    }#}
+{#    #}
+{#    .header-user-animate {#}
+{#        animation: fadeIn 0.6s ease-out 0.2s forwards;#}
+{#        opacity: 0;#}
+{#    }#}
+{#    #}
+{#    @keyframes slideInRight {#}
+{#        from {#}
+{#            transform: translateX(20px);#}
+{#            opacity: 0;#}
+{#        }#}
+{#        to {#}
+{#            transform: translateX(0);#}
+{#            opacity: 1;#}
+{#        }#}
+{#    }#}
+{#    #}
+{#    @keyframes fadeIn {#}
+{#        from { opacity: 0; }#}
+{#        to { opacity: 1; }#}
+{#    }#}
+{#    #}
+{#    /* Notification Bell Animation */#}
+{#    .notification-bell {#}
+{#        position: relative;#}
+{#    }#}
+{#    #}
+{#    .notification-bell .icon {#}
+{#        transition: transform 0.3s ease;#}
+{#    }#}
+{#    #}
+{#    .notification-bell:hover .icon {#}
+{#        transform: rotate(15deg);#}
+{#        animation: bellRing 0.5s ease-in-out infinite alternate;#}
+{#    }#}
+{#    #}
+{#    @keyframes bellRing {#}
+{#        0%, 100% {#}
+{#            transform: rotate(0);#}
+{#        }#}
+{#        25% {#}
+{#            transform: rotate(10deg);#}
+{#        }#}
+{#        50% {#}
+{#            transform: rotate(-10deg);#}
+{#        }#}
+{#        75% {#}
+{#            transform: rotate(5deg);#}
+{#        }#}
+{#    }#}
+{#    #}
+{#    .notification-badge {#}
+{#        animation: pulseBadge 2s infinite;#}
+{#    }#}
+{#    #}
+{#    @keyframes pulseBadge {#}
+{#        0% {#}
+{#            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);#}
+{#        }#}
+{#        70% {#}
+{#            box-shadow: 0 0 0 8px rgba(255, 59, 48, 0);#}
+{#        }#}
+{#        100% {#}
+{#            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);#}
+{#        }#}
+{#    }#}
+{#</style>#}
+{#    #}
+{#    #}
+{##}
+{#    <script>#}
+{#        tinymce.init({#}
+{#            selector: 'textarea',#}
+{#            height: auto,#}
+{#            width: auto,#}
+{#            plugins: [#}
+{#                'advlist autolink lists link image charmap print preview anchor',#}
+{#                'searchreplace visualblocks code fullscreen',#}
+{#                'insertdatetime media table paste code help wordcount'#}
+{#            ],#}
+{#            toolbar: 'undo redo | formatselect | bold italic backcolor | \#}
+{#                      alignleft aligncenter alignright alignjustify | \#}
+{#                      bullist numlist outdent indent | removeformat | help'#}
+{#        });#}
+{#    </script>#}
+{#    {% unicorn_scripts %}#}
+{#</head>#}
+{##}
+{#<body class="nk-body bg-white has-sidebar ">#}
+{#<div class="nk-app-root">#}
+{#    <!-- main @s -->#}
+{#    <div class="nk-main ">#}
+{#        <!-- sidebar @s -->#}
+{#        {% include 'layout/aside.html' %}#}
+{#        <!-- sidebar @e -->#}
+{#        <!-- wrap @s -->#}
+{#        <div class="nk-wrap ">#}
+{#            <!-- main header @s -->#}
+{#            <div class="nk-header nk-header-fixed is-light">#}
+{#                <div class="container-fluid">#}
+{#                    <div class="nk-header-wrap">#}
+{##}
+{#                        <div class="nk-header-brand d-xl-none">#}
+{#                            <a href="#" class="logo-link">#}
+{#                                <img class="logo-light logo-img" src="{% static 'images/logokeneya260.png' %}"#}
+{#                                     srcset="{% static 'images/logokeneya260.png' %}" alt="logo">#}
+{#                                <img class="logo-dark logo-img" src="{% static 'images/logokeneya260.png' %}"#}
+{#                                     srcset="{% static 'images/logokeneya260.png' %}" alt="logo-dark">#}
+{#                            </a>#}
+{#                        </div><!-- .nk-header-brand -->#}
+{#                        {% include 'layout/notif_header.html' %}#}
+{#                           {% include 'layout/user_log.html' %}#}
+{#                    </div><!-- .nk-header-wrap -->#}
+{#                </div><!-- .container-fliud -->#}
+{#            </div>#}
+{#            <!-- main header @e -->#}
+{#            <!-- content @s -->#}
+{#            {% block content %}#}
+{##}
+{#            {% endblock %}#}
+{#            <!-- content @e -->#}
+{#            <!-- footer @s -->#}
+{#            <div class="nk-footer">#}
+{#                <div class="container-fluid">#}
+{#                    <div class="nk-footer-wrap">#}
+{#                        <div class="nk-footer-copyright"> &copy; 2022 KENEYA by <a href="https://afriqconsulting.com" target="_blank">AFRIQCONSULTING</a>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <!-- footer @e -->#}
+{#        </div>#}
+{#        <!-- wrap @e -->#}
+{#    </div>#}
+{#    <!-- main @e -->#}
+{#</div>#}
+{#<!-- app-root @e -->#}
+{#<!-- JavaScript -->#}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#<script src="{% static 'assets/js/bundle.js' %}"></script>#}
+{#<script src="{% static 'assets/js/scripts.js' %}"></script>#}
+{#<script src="{% static 'assets/js/charts/gd-default.js' %}"></script>#}
+{#{% if messages %}#}
+{#    {% for message in messages %}#}
+{#        {% if message.tags == 'success' %}#}
+{#            <script type="text/javascript">#}
+{#                $(document).ready(function () {#}
+{#                    Swal.fire({#}
+{#                        title: "Félicitation ! ",#}
+{#                        text: " {{ message }}",#}
+{#                        icon: "success",#}
+{##}
+{#                    })#}
+{#                });#}
+{#            </script>#}
+{#        {% elif message.tags == 'warning' %}#}
+{#            <script type="text/javascript">#}
+{#                $(document).ready(function () {#}
+{#                    Swal.fire({#}
+{#                        title: "Attention alert",#}
+{#                        text: " {{ message }}",#}
+{#                        icon: "warning",#}
+{##}
+{#                    })#}
+{#                });#}
+{#            </script>#}
+{#        #}
+{#        {% elif message.tags == 'info' %}#}
+{#            <script type="text/javascript">#}
+{#                $(document).ready(function () {#}
+{#                    Swal.fire({#}
+{#                        title: "Information",#}
+{#                        text: " {{ message }}",#}
+{#                        icon: "info",#}
+{##}
+{#                    })#}
+{#                });#}
+{#            </script>#}
+{#            #}
+{#        {% elif message.tags == 'error' %}#}
+{#            <script type="text/javascript">#}
+{##}
+{#                $(document).ready(function () {#}
+{#                    Swal.fire({#}
+{#                        title: "Attention Erreur",#}
+{#                        text: " {{ message }}",#}
+{#                        icon: "error",#}
+{##}
+{#                    })#}
+{##}
+{#                });#}
+{#            </script>#}
+{#        {% endif %}#}
+{#    {% endfor %}#}
+{#{% endif %}#}
+{##}
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', (event) => {#}
+{#        const darkSwitch = document.querySelector('.dark-switch');#}
+{#        const body = document.body;#}
+{##}
+{#        // Check if the dark mode is enabled in localStorage#}
+{#        if (localStorage.getItem('dark-mode') === 'enabled') {#}
+{#            body.classList.add('dark-mode');#}
+{#        }#}
+{##}
+{#        // Toggle dark mode#}
+{#        darkSwitch.addEventListener('click', () => {#}
+{#            if (body.classList.contains('dark-mode')) {#}
+{#                body.classList.remove('dark-mode');#}
+{#                localStorage.setItem('dark-mode', 'disabled');#}
+{#            } else {#}
+{#                body.classList.add('dark-mode');#}
+{#                localStorage.setItem('dark-mode', 'enabled');#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+{#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>#}
+{#<script src="https://unpkg.com/htmx.org@1.9.2"></script>#}
+{#<script>#}
+{#    var input = document.querySelector("#phone");#}
+{#    var iti = window.intlTelInput(input, {#}
+{#        nationalMode: true,#}
+{#        initialCountry: "ci", // Set default to Côte d'Ivoire#}
+{#        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",#}
+{#    });#}
+{#</script>#}
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', function () {#}
+{#        const communeSelect = document.getElementById('id_commune');#}
+{#        const newCommuneGroup = document.getElementById('new_commune_group');#}
+{##}
+{#        communeSelect.addEventListener('change', function () {#}
+{#            if (this.value === 'Autre') {#}
+{#                newCommuneGroup.style.display = 'block';  // Show the new commune field#}
+{#            } else {#}
+{#                newCommuneGroup.style.display = 'none';  // Hide the new commune field#}
+{#            }#}
+{#        });#}
+{##}
+{#        // Optional: Reset the form and hide new_commune when resetting#}
+{#        document.querySelector('button[type="reset"]').addEventListener('click', function () {#}
+{#            newCommuneGroup.style.display = 'none';#}
+{#        });#}
+{#    });#}
+{#</script>#}
+{##}
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', function() {#}
+{#        // Header scroll effect#}
+{#        const header = document.querySelector('.nk-header');#}
+{#        #}
+{#        window.addEventListener('scroll', function() {#}
+{#            if (window.scrollY > 10) {#}
+{#                header.classList.add('scrolled');#}
+{#            } else {#}
+{#                header.classList.remove('scrolled');#}
+{#            }#}
+{#        });#}
+{#        #}
+{#        // Initialize GSAP animations#}
+{#        gsap.from(".logo-container", {#}
+{#            duration: 0.8,#}
+{#            y: -20,#}
+{#            opacity: 0,#}
+{#            ease: "back.out(1.7)"#}
+{#        });#}
+{#        #}
+{#        // Add animation to notification items (assuming they exist)#}
+{#        gsap.from(".notification-item", {#}
+{#            duration: 0.5,#}
+{#            x: 20,#}
+{#            opacity: 0,#}
+{#            stagger: 0.1,#}
+{#            delay: 0.3#}
+{#        });#}
+{#        #}
+{#        // Hover effect for logo#}
+{#        const logoLink = document.querySelector('.logo-link');#}
+{#        if (logoLink) {#}
+{#            logoLink.addEventListener('mouseenter', function() {#}
+{#                gsap.to(this.querySelector('.logo-img'), {#}
+{#                    duration: 0.3,#}
+{#                    scale: 1.05,#}
+{#                    ease: "power2.out"#}
+{#                });#}
+{#            });#}
+{#            #}
+{#            logoLink.addEventListener('mouseleave', function() {#}
+{#                gsap.to(this.querySelector('.logo-img'), {#}
+{#                    duration: 0.3,#}
+{#                    scale: 1,#}
+{#                    ease: "power2.out"#}
+{#                });#}
+{#            });#}
+{#        }#}
+{#    });#}
+{#</script>#}
+{#</body>#}
+{##}
+{#</html>#}

@@ -42,12 +42,12 @@ if [[ "${RUN_COLLECTSTATIC:-0}" == "1" ]]; then
 fi
 
 # --- Ne pas casser les permissions des volumes : simple test d'écriture ---
-mkdir -p /smitci-app/media /smitci-app/static || true
-if ! sh -lc 'touch /smitci-app/media/.write_test && rm -f /smitci-app/media/.write_test'; then
-  echo "[WARN] /smitci-app/media non inscriptible par $(id) – vérifier les volumes/ownership."
+mkdir -p /chu-app/media /chu-app/static || true
+if ! sh -lc 'touch /chu-app/media/.write_test && rm -f /chu-app/media/.write_test'; then
+  echo "[WARN] /chu-app/media non inscriptible par $(id) – vérifier les volumes/ownership."
 fi
-if ! sh -lc 'touch /smitci-app/static/.write_test && rm -f /smitci-app/static/.write_test'; then
-  echo "[WARN] /smitci-app/static non inscriptible par $(id)."
+if ! sh -lc 'touch /chu-app/static/.write_test && rm -f /chu-app/static/.write_test'; then
+  echo "[WARN] /chu-app/static non inscriptible par $(id)."
 fi
 
 # --- Si docker-compose fournit une commande, on l'exécute telle quelle ---
@@ -57,7 +57,7 @@ if [[ "$#" -gt 0 ]]; then
 fi
 
 # --- Sinon fallback Gunicorn configurable par env ---
-APP_MODULE="${APP_MODULE:-smitci.wsgi:application}"
+APP_MODULE="${APP_MODULE:-chu.wsgi:application}"
 WORKER_CLASS="${WORKER_CLASS:-sync}"  # pour ASGI: uvicorn.workers.UvicornWorker
 BIND="${GUNICORN_BIND:-0.0.0.0:8000}"
 OPTS="${GUNICORN_OPTS:---workers 2 --threads 2 --timeout 60 --graceful-timeout 30 --log-level warning}"

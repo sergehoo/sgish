@@ -1,277 +1,371 @@
- {% load  static %}
-<!-- sidebar @s -->
-<div class="nk-sidebar nk-sidebar-fixed " data-content="sidebarMenu">
-    <div class="nk-sidebar-element nk-sidebar-head">
-        <div class="nk-sidebar-brand">
-            <a href="{% url 'home' %}" class="logo-link nk-sidebar-logo">
-                <img class="logo-light logo-img" src="{% static 'images/logokeneya260.png' %}" alt="logo">
-                <img class="logo-dark logo-img" src="{% static 'images/logokeneya260.png' %}" alt="logo-dark">
-                SMIT
+{% load static %}
+{#<!-- sidebar @s -->#}
+<div class="nk-sidebar nk-sidebar-fixed" data-content="sidebarMenu">
+    <div class="nk-sidebar-element nk-sidebar-head bg-hospital-blue-800">
+        <div class="nk-sidebar-brand py-4">
+            <a href="{% url 'home' %}" class="logo-link nk-sidebar-logo flex items-center">
+                <div class="logo-container p-2 rounded-xl mr-3">
+                    <img class="logo-img h-8 w-auto filter " src="{% static 'images/chu_cocody.jpg' %}" alt="logo">
+                </div>
+                <span class="font-bold text-xl tracking-wide">CHU de COCODY</span>
             </a>
         </div>
-        <div class="nk-menu-trigger mr-n2">
-            <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu">
-                <em class="icon ni ni-arrow-left"></em>
+        <div class="nk-menu-trigger mr-4">
+            <a href="#"
+               class="nk-nav-toggle nk-quick-nav-icon d-xl-none bg-white/10 hover:bg-white/20 transition-colors rounded-full p-2"
+               data-target="sidebarMenu">
+                <em class="icon ni ni-arrow-left text-white"></em>
             </a>
         </div>
     </div>
     <!-- .nk-sidebar-element -->
-    <div class="nk-sidebar-element">
+    <div class="nk-sidebar-element bg-gradient-to-b from-gray-50 to-gray-100">
         <div class="nk-sidebar-body" data-simplebar>
-            <div class="nk-sidebar-content">
+            <div class="nk-sidebar-content py-4">
                 <div class="nk-sidebar-menu">
-                    <ul class="nk-menu">
+                    <!-- User Quick Info -->
+                    <div class="px-4 mb-6">
+                        <div class="bg-white rounded-xl shadow-medical p-4 border-l-4 border-hospital-blue-500">
+                            <div class="flex items-center">
+                                <div class="medical-icon bg-hospital-blue-100 text-hospital-blue-600 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                                    <i class="fas fa-user-md text-lg"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">
+                                        Dr. {{ request.user.get_full_name|default:request.user.username }}</p>
+                                    <p class="text-xs text-gray-500 truncate">{{ request.user.groups.first.name|default:"Médecin" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nk-menu space-y-1 px-2">
                         <!-- Section Générale -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Générale</h6>
+                        <li class="nk-menu-heading mt-6 first:mt-0">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Générale</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'home' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><span class="icon-circle bg-primary"><em class="icon icon-circle ni ni-dashboard-fill "></em></span></span>
-                                <span class="nk-menu-text">Dashboard</span>
+                            <a href="{% url 'home' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-hospital-blue-100 text-hospital-blue-600 group-hover:bg-hospital-blue-200 group-hover:text-hospital-blue-700 transition-colors">
+                                    <em class="icon ni ni-dashboard-fill"></em>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Tableau de bord</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-hospital-blue-100 text-hospital-blue-600 text-xs font-medium px-2 py-1 rounded-full">{{ patient_nbr }}</span>
+                                </div>
                             </a>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'global_search' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><em class="icon ni ni-search"></em></span>
-                                <span class="nk-menu-text">Recherche</span>
-                                <span class="nk-menu-badge">{{ patient_nbr }}</span>
+                            <a href="{% url 'global_search' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-green-100 text-green-600 group-hover:bg-green-200 group-hover:text-green-700 transition-colors">
+                                    <em class="icon ni ni-search"></em>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Recherche globale</span>
                             </a>
                         </li>
 
                         <!-- Section Accueil -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Accueil</h6>
-                        </li>
-                        <li class="nk-menu-item">
-                            <a href="{% url 'attente' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
-                                <span class="nk-menu-text">Salle d'attente</span>
-                                <span class="nk-menu-badge bg-danger text-white">{{ apointments_nbr }}</span>
-                            </a>
-                        </li>
-
-                       <li class="nk-menu-item">
-                            <a href="{% url 'appointment_over' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><em class="icon ni ni-calendar-check"></em></span>
-                                <span class="nk-menu-text">Patients réçus</span>
-                                <span class="nk-menu-badge">{{ appointments_all }}</span>
-                            </a>
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Accueil</h6>
                         </li>
 
                         <li class="nk-menu-item">
-                            <a href="{% url 'appointment_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><em class="icon ni ni-calendar-booking-fill"></em></span>
-                                <span class="nk-menu-text">Rendez-vous</span>
-                                <span class="nk-menu-badge">{{ appointments_all }}</span>
+                            <a href="{% url 'attente' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-orange-100 text-orange-600 group-hover:bg-orange-200 group-hover:text-orange-700 transition-colors">
+                                    <em class="icon ni ni-users-fill"></em>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Salle d'attente</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full animate-pulse">{{ apointments_nbr }}</span>
+                                </div>
                             </a>
                         </li>
 
+                        <li class="nk-menu-item">
+                            <a href="{% url 'appointment_over' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-green-100 text-green-600 group-hover:bg-green-200 group-hover:text-green-700 transition-colors">
+                                    <em class="icon ni ni-calendar-check"></em>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Patients reçus</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">{{ appointments_all }}</span>
+                                </div>
+                            </a>
+                        </li>
 
+                        <li class="nk-menu-item">
+                            <a href="{% url 'appointment_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-purple-100 text-purple-600 group-hover:bg-purple-200 group-hover:text-purple-700 transition-colors">
+                                    <em class="icon ni ni-calendar-booking-fill"></em>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Rendez-vous</span>
+                            </a>
+                        </li>
 
                         <!-- Section Consultation -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Consultation</h6>
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Consultation</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'consultation_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-stethoscope"></i></span>
-                                <span class="nk-menu-text">Liste Consultations</span>
-                                <span class="nk-menu-badge ">{{ consul_nbr }}</span>
+                            <a href="{% url 'consultation_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-blue-100 text-blue-600 group-hover:bg-blue-200 group-hover:text-blue-700 transition-colors">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Liste Consultations</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-blue-100 text-blue-600 text-xs font-medium px-2 py-1 rounded-full">{{ consul_nbr }}</span>
+                                </div>
                             </a>
                         </li>
 
-                     <!-- Section Urgence -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">URGENCES</h6>
+                        <!-- Section Urgence -->
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Urgences</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'urgences_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-ambulance text-danger"></i></span>
-                                <span class="nk-menu-text">Liste des Urgences </span>
-                                <span class="nk-menu-badge">{{ urgencehospi }}</span>
+                            <a href="{% url 'urgences_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-red-50 hover:shadow-medical border-l-4 border-transparent hover:border-red-400">
+                                <span class="nk-menu-icon medical-icon bg-red-100 text-red-600 group-hover:bg-red-200 group-hover:text-red-700 transition-colors">
+                                    <i class="fa-solid fa-ambulance"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-red-800">Liste des Urgences</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full animate-pulse">{{ urgencehospi }}</span>
+                                </div>
                             </a>
                         </li>
 
                         <!-- Section Hospitalisation -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Hospitalisation</h6>
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Hospitalisation</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'hospitalisation' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-bed-pulse "></i></span>
-                                <span class="nk-menu-text">En cours d'hospitalisation</span>
-                                <span class="nk-menu-badge bg-danger text-white">{{ Hospitaliza_encours }}</span>
+                            <a href="{% url 'hospitalisation' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200 group-hover:text-indigo-700 transition-colors">
+                                    <i class="fa-solid fa-bed-pulse"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Hospitalisations en cours</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full animate-pulse">{{ Hospitaliza_encours }}</span>
+                                </div>
                             </a>
                         </li>
-                    <li class="nk-menu-item">
-                            <a href="{% url 'suivie_soins_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-clock-rotate-left "></i></span>
-                                <span class="nk-menu-text">Suivi soins hospitalisation</span>
-                                <span class="nk-menu-badge bg-danger text-white">{{ Hospitaliza_encours }}</span>
-                            </a>
-                        </li>
-                     <li class="nk-menu-item">
-                            <a href="{% url 'hospitalised_patient' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-bed "></i></span>
-                                <span class="nk-menu-text">Patients hospitalisés</span>
-                                <span class="nk-menu-badge">{{ discharged_count }}</span>
-                            </a>
-                        </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'hospi_unites' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-bed"></i></span>
-                                <span class="nk-menu-text">Unités d'hospitalisation</span>
+                            <a href="{% url 'suivie_soins_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-cyan-100 text-cyan-600 group-hover:bg-cyan-200 group-hover:text-cyan-700 transition-colors">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Suivi soins</span>
                             </a>
-                        </li>
-                     <!-- Section Paramètres sous-menu pour Hospitalisation -->
-                        <li class="nk-menu-item has-sub">
-                            <a href="#" class="nk-menu-link nk-menu-toggle">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-gears"></i></span>
-                                <span class="nk-menu-text">Paramètres</span>
-                            </a>
-                            <ul class="nk-menu-sub">
-                                <li class="nk-menu-item">
-                                    <a href="#" class="nk-menu-link">
-                                        <i class=" fa-solid fa-flask-vial mr-3"></i>
-                                        <span class="nk-menu-text">Analyses</span>
-                                    </a>
-                                </li>
-                                <li class="nk-menu-item">
-                                    <a href="#" class="nk-menu-link">
-                                        <i class=" fa-solid fa-tools mr-3"></i>
-                                        <span class="nk-menu-text">Kits</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
-                     <!-- Section Suivi -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Suivi Patients</h6>
-                        </li>
-                    
-                    <li class="nk-menu-item">
-                            <a href="{% url 'bilan_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-file-arrow-up"></i></span>
-                                <span class="nk-menu-text">Bilans Initiaux </span>
-                                <span class="nk-menu-badge bg-primary text-white">{{ bilaninitial }}</span>
-                            </a>
-                        </li>
                         <li class="nk-menu-item">
-                            <a href="{% url 'suivi_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-folder-tree"></i></span>
-                                <span class="nk-menu-text">Suivi des Patients </span>
-                                <span class="nk-menu-badge bg-danger text-white">{{ suivi_nbr }}</span>
+                            <a href="{% url 'hospitalised_patient' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200 group-hover:text-emerald-700 transition-colors">
+                                    <i class="fa-solid fa-bed"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Patients hospitalisés</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-emerald-100 text-emerald-600 text-xs font-medium px-2 py-1 rounded-full">{{ discharged_count }}</span>
+                                </div>
                             </a>
                         </li>
-                    
 
-
-
-
-                        <!-- Section Spécialités -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Maladies sous surveillance</h6>
+                        <li class="nk-menu-item">
+                            <a href="{% url 'hospi_unites' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-violet-100 text-violet-600 group-hover:bg-violet-200 group-hover:text-violet-700 transition-colors">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Unités d'hospitalisation</span>
+                            </a>
                         </li>
+
+                        <!-- Section Suivi -->
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Suivi Patients</h6>
+                        </li>
+
+                        <li class="nk-menu-item">
+                            <a href="{% url 'bilan_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-amber-100 text-amber-600 group-hover:bg-amber-200 group-hover:text-amber-700 transition-colors">
+                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Bilans Initiaux</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-amber-100 text-amber-600 text-xs font-medium px-2 py-1 rounded-full">{{ bilaninitial }}</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nk-menu-item">
+                            <a href="{% url 'suivi_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-teal-100 text-teal-600 group-hover:bg-teal-200 group-hover:text-teal-700 transition-colors">
+                                    <i class="fa-solid fa-folder-tree"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Suivi des Patients</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full animate-pulse">{{ suivi_nbr }}</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <!-- Section Maladies sous surveillance -->
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Maladies sous surveillance</h6>
+                        </li>
+
                         {% for maladie in services %}
-                        <li class="nk-menu-item has-sub">
-                            <a href="#" class="nk-menu-link nk-menu-toggle">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-virus"></i></span>
-                                <span class="nk-menu-text">{{ maladie }}</span>
-                            </a>
-                            <ul class="nk-menu-sub">
-                                {% for sbactivity in maladie.subactivities.all %}
-                                <li class="nk-menu-item">
-                                    <a href="{% url 'service_content_detail' serv=maladie.nom acty=sbactivity.nom pk=sbactivity.id %}" class="nk-menu-link">
-                                        <i class="{{ sbactivity.icon }} mr-3"></i>
-                                        <span class="nk-menu-text">{{ sbactivity.nom }}</span>
-                                    </a>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#"
+                                   class="nk-menu-link nk-menu-toggle group relative flex items-center justify-between px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical">
+                                    <div class="flex items-center">
+                                    <span class="nk-menu-icon medical-icon bg-rose-100 text-rose-600 group-hover:bg-rose-200 group-hover:text-rose-700 transition-colors">
+                                        <i class="fa-solid fa-virus"></i>
+                                    </span>
+                                        <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">{{ maladie }}</span>
+                                    </div>
+                                    <em class="icon ni ni-chevron-right text-gray-400 group-hover:text-hospital-blue-500 transition-transform duration-300"></em>
+                                </a>
+                                <ul class="nk-menu-sub mt-1 ml-4 pl-2 border-l-2 border-gray-200">
+                                    {% for sbactivity in maladie.subactivities.all %}
+                                        <li class="nk-menu-item">
+                                            <a href="{% url 'service_content_detail' serv=maladie.nom acty=sbactivity.nom pk=sbactivity.id %}"
+                                               class="nk-menu-link group flex items-center px-3 py-2 rounded-lg transition-all duration-300 hover:bg-hospital-blue-50">
+                                                <i class="{{ sbactivity.icon }} mr-3 text-hospital-blue-500 group-hover:text-hospital-blue-600"></i>
+                                                <span class="nk-menu-text text-sm text-gray-600 group-hover:text-hospital-blue-800">{{ sbactivity.nom }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
                         {% endfor %}
 
                         <!-- Section Laboratoire -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Laboratoire</h6>
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Laboratoire</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'echantillons_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-vial"></i></span>
-                                <span class="nk-menu-text">Prélèvements</span>
-                            </a>
-                        </li>
-                        <li class="nk-menu-item">
-                            <a href="{% url 'examen_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-flask-vial"></i></span>
-                                <span class="nk-menu-text">Demande d'Analyse </span>
-                                <span class="nk-menu-badge bg-danger text-white">{{ examencount }}</span>
+                            <a href="{% url 'echantillons_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-lime-100 text-lime-600 group-hover:bg-lime-200 group-hover:text-lime-700 transition-colors">
+                                    <i class="fa-solid fa-vial"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Prélèvements</span>
                             </a>
                         </li>
 
-                    <li class="nk-menu-item">
-                            <a href="{% url 'examen_done_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-flask-vial"></i></span>
-                                <span class="nk-menu-text">Analyses effectués </span>
-                                <span class="nk-menu-badge">{{ examensdonecount }}</span>
+                        <li class="nk-menu-item">
+                            <a href="{% url 'examen_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-fuchsia-100 text-fuchsia-600 group-hover:bg-fuchsia-200 group-hover:text-fuchsia-700 transition-colors">
+                                    <i class="fa-solid fa-flask-vial"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Demande d'Analyse</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full animate-pulse">{{ examencount }}</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nk-menu-item">
+                            <a href="{% url 'examen_done_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200 group-hover:text-emerald-700 transition-colors">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Analyses effectuées</span>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <span class="bg-emerald-100 text-emerald-600 text-xs font-medium px-2 py-1 rounded-full">{{ examensdonecount }}</span>
+                                </div>
                             </a>
                         </li>
 
                         <!-- Section Pharmacie -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Pharmacie</h6>
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Pharmacie</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'medicaments' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-prescription-bottle-medical"></i></span>
-                                <span class="nk-menu-text">Médicaments</span>
-                            </a>
-                        </li>
-                        <li class="nk-menu-item">
-                            <a href="{% url 'mouvement-stock' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-arrow-down-up-across-line"></i></span>
-                                <span class="nk-menu-text">Mouvement de stock</span>
-                            </a>
-                        </li>     
-                        <li class="nk-menu-item">
-                            <a href="{% url 'rendezvous_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-calendar"></i></span>
-                                <span class="nk-menu-text">Rendez-vous</span>
-                            </a>
-                        </li>     
-                        <li class="nk-menu-item">
-                            <a href="{% url 'commandes-list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-basket-shopping"></i></span>
-                                <span class="nk-menu-text">Commandes</span>
-                            </a>
-                        </li>
-                     <li class="nk-menu-item">
-                            <a href="#" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-chart-bar"></i></span>
-                                <span class="nk-menu-text">Rapports</span>
+                            <a href="{% url 'medicaments' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-sky-100 text-sky-600 group-hover:bg-sky-200 group-hover:text-sky-700 transition-colors">
+                                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Médicaments</span>
                             </a>
                         </li>
 
-                      <!-- Section Parametres -->
-                        <li class="nk-menu-heading">
-                            <h6 class="overline-title text-primary-alt">Paramètres</h6>
+                        <!-- Section Paramètres -->
+                        <li class="nk-menu-heading mt-6">
+                            <h6 class="overline-title text-hospital-blue-700 font-semibold text-xs uppercase tracking-wider pl-3">
+                                Administration</h6>
                         </li>
+
                         <li class="nk-menu-item">
-                            <a href="{% url 'employee_list' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-user-circle"></i></span>
-                                <span class="nk-menu-text">Gestion des Employees</span>
+                            <a href="{% url 'employee_list' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:text-gray-700 transition-colors">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Gestion des Employés</span>
                             </a>
                         </li>
-                    <li class="nk-menu-item">
-                            <a href="{% url 'user_role' %}" class="nk-menu-link">
-                                <span class="nk-menu-icon"><i class="fa-solid fa-user-secret"></i></span>
-                                <span class="nk-menu-text">Gestion des Rôles</span>
+
+                        <li class="nk-menu-item">
+                            <a href="{% url 'user_role' %}"
+                               class="nk-menu-link group relative flex items-center px-3 py-3 rounded-xl transition-all duration-300 hover:bg-hospital-blue-50 hover:shadow-medical border-l-4 border-transparent hover:border-hospital-blue-400">
+                                <span class="nk-menu-icon medical-icon bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:text-gray-700 transition-colors">
+                                    <i class="fa-solid fa-user-secret"></i>
+                                </span>
+                                <span class="nk-menu-text ml-3 font-medium text-gray-700 group-hover:text-hospital-blue-800">Gestion des Rôles</span>
                             </a>
                         </li>
                     </ul>
-                    <!-- .nk-menu -->
+
+                    <!-- Quick Actions Footer -->
+                    <div class="mt-8 px-4">
+                        <div class="bg-white rounded-xl shadow-medical p-4 border border-gray-200">
+                            <h6 class="text-sm font-semibold text-gray-700 mb-2">Actions rapides</h6>
+                            <div class="flex space-x-2">
+                                <a href="{% url 'attente' %}"
+                                   class="flex-1 bg-hospital-blue-50 text-hospital-blue-700 text-xs font-medium py-2 px-3 rounded-lg text-center hover:bg-hospital-blue-100 transition-colors">
+                                    <i class="fas fa-plus mr-1"></i> Nouveau
+                                </a>
+                                <a href="{% url 'global_search' %}"
+                                   class="flex-1 bg-green-50 text-green-700 text-xs font-medium py-2 px-3 rounded-lg text-center hover:bg-green-100 transition-colors">
+                                    <i class="fas fa-search mr-1"></i> Rechercher
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- .nk-sidebar-menu -->
             </div>
@@ -281,4 +375,291 @@
     </div>
     <!-- .nk-sidebar-element -->
 </div>
+
 <!-- sidebar @e -->
+
+{##}
+{# {% load  static %}#}
+{#<!-- sidebar @s -->#}
+{#<div class="nk-sidebar nk-sidebar-fixed " data-content="sidebarMenu">#}
+{#    <div class="nk-sidebar-element nk-sidebar-head">#}
+{#        <div class="nk-sidebar-brand">#}
+{#            <a href="{% url 'home' %}" class="logo-link nk-sidebar-logo">#}
+{#                <img class="logo-light logo-img" src="{% static 'images/logokeneya260.png' %}" alt="logo">#}
+{#                <img class="logo-dark logo-img" src="{% static 'images/logokeneya260.png' %}" alt="logo-dark">#}
+{#                SMIT#}
+{#            </a>#}
+{#        </div>#}
+{#        <div class="nk-menu-trigger mr-n2">#}
+{#            <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu">#}
+{#                <em class="icon ni ni-arrow-left"></em>#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!-- .nk-sidebar-element -->#}
+{#    <div class="nk-sidebar-element">#}
+{#        <div class="nk-sidebar-body" data-simplebar>#}
+{#            <div class="nk-sidebar-content">#}
+{#                <div class="nk-sidebar-menu">#}
+{#                    <ul class="nk-menu">#}
+{#                        <!-- Section Générale -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Générale</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'home' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><span class="icon-circle bg-primary"><em class="icon icon-circle ni ni-dashboard-fill "></em></span></span>#}
+{#                                <span class="nk-menu-text">Dashboard</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'global_search' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><em class="icon ni ni-search"></em></span>#}
+{#                                <span class="nk-menu-text">Recherche</span>#}
+{#                                <span class="nk-menu-badge">{{ patient_nbr }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                        <!-- Section Accueil -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Accueil</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'attente' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>#}
+{#                                <span class="nk-menu-text">Salle d'attente</span>#}
+{#                                <span class="nk-menu-badge bg-danger text-white">{{ apointments_nbr }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                       <li class="nk-menu-item">#}
+{#                            <a href="{% url 'appointment_over' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><em class="icon ni ni-calendar-check"></em></span>#}
+{#                                <span class="nk-menu-text">Patients réçus</span>#}
+{#                                <span class="nk-menu-badge">{{ appointments_all }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'appointment_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><em class="icon ni ni-calendar-booking-fill"></em></span>#}
+{#                                <span class="nk-menu-text">Rendez-vous</span>#}
+{#                                <span class="nk-menu-badge">{{ appointments_all }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{##}
+{##}
+{#                        <!-- Section Consultation -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Consultation</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'consultation_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-stethoscope"></i></span>#}
+{#                                <span class="nk-menu-text">Liste Consultations</span>#}
+{#                                <span class="nk-menu-badge ">{{ consul_nbr }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                     <!-- Section Urgence -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">URGENCES</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'urgences_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-ambulance text-danger"></i></span>#}
+{#                                <span class="nk-menu-text">Liste des Urgences </span>#}
+{#                                <span class="nk-menu-badge">{{ urgencehospi }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                        <!-- Section Hospitalisation -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Hospitalisation</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'hospitalisation' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-bed-pulse "></i></span>#}
+{#                                <span class="nk-menu-text">En cours d'hospitalisation</span>#}
+{#                                <span class="nk-menu-badge bg-danger text-white">{{ Hospitaliza_encours }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    <li class="nk-menu-item">#}
+{#                            <a href="{% url 'suivie_soins_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-clock-rotate-left "></i></span>#}
+{#                                <span class="nk-menu-text">Suivi soins hospitalisation</span>#}
+{#                                <span class="nk-menu-badge bg-danger text-white">{{ Hospitaliza_encours }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                     <li class="nk-menu-item">#}
+{#                            <a href="{% url 'hospitalised_patient' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-bed "></i></span>#}
+{#                                <span class="nk-menu-text">Patients hospitalisés</span>#}
+{#                                <span class="nk-menu-badge">{{ discharged_count }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'hospi_unites' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-bed"></i></span>#}
+{#                                <span class="nk-menu-text">Unités d'hospitalisation</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                     <!-- Section Paramètres sous-menu pour Hospitalisation -->#}
+{#                        <li class="nk-menu-item has-sub">#}
+{#                            <a href="#" class="nk-menu-link nk-menu-toggle">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-gears"></i></span>#}
+{#                                <span class="nk-menu-text">Paramètres</span>#}
+{#                            </a>#}
+{#                            <ul class="nk-menu-sub">#}
+{#                                <li class="nk-menu-item">#}
+{#                                    <a href="#" class="nk-menu-link">#}
+{#                                        <i class=" fa-solid fa-flask-vial mr-3"></i>#}
+{#                                        <span class="nk-menu-text">Analyses</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="nk-menu-item">#}
+{#                                    <a href="#" class="nk-menu-link">#}
+{#                                        <i class=" fa-solid fa-tools mr-3"></i>#}
+{#                                        <span class="nk-menu-text">Kits</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{##}
+{#                     <!-- Section Suivi -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Suivi Patients</h6>#}
+{#                        </li>#}
+{##}
+{#                    <li class="nk-menu-item">#}
+{#                            <a href="{% url 'bilan_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-file-arrow-up"></i></span>#}
+{#                                <span class="nk-menu-text">Bilans Initiaux </span>#}
+{#                                <span class="nk-menu-badge bg-primary text-white">{{ bilaninitial }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'suivi_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-folder-tree"></i></span>#}
+{#                                <span class="nk-menu-text">Suivi des Patients </span>#}
+{#                                <span class="nk-menu-badge bg-danger text-white">{{ suivi_nbr }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#                        <!-- Section Spécialités -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Maladies sous surveillance</h6>#}
+{#                        </li>#}
+{#                        {% for maladie in services %}#}
+{#                        <li class="nk-menu-item has-sub">#}
+{#                            <a href="#" class="nk-menu-link nk-menu-toggle">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-virus"></i></span>#}
+{#                                <span class="nk-menu-text">{{ maladie }}</span>#}
+{#                            </a>#}
+{#                            <ul class="nk-menu-sub">#}
+{#                                {% for sbactivity in maladie.subactivities.all %}#}
+{#                                <li class="nk-menu-item">#}
+{#                                    <a href="{% url 'service_content_detail' serv=maladie.nom acty=sbactivity.nom pk=sbactivity.id %}" class="nk-menu-link">#}
+{#                                        <i class="{{ sbactivity.icon }} mr-3"></i>#}
+{#                                        <span class="nk-menu-text">{{ sbactivity.nom }}</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        {% endfor %}#}
+{##}
+{#                        <!-- Section Laboratoire -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Laboratoire</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'echantillons_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-vial"></i></span>#}
+{#                                <span class="nk-menu-text">Prélèvements</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'examen_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-flask-vial"></i></span>#}
+{#                                <span class="nk-menu-text">Demande d'Analyse </span>#}
+{#                                <span class="nk-menu-badge bg-danger text-white">{{ examencount }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                    <li class="nk-menu-item">#}
+{#                            <a href="{% url 'examen_done_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-flask-vial"></i></span>#}
+{#                                <span class="nk-menu-text">Analyses effectués </span>#}
+{#                                <span class="nk-menu-badge">{{ examensdonecount }}</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                        <!-- Section Pharmacie -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Pharmacie</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'medicaments' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-prescription-bottle-medical"></i></span>#}
+{#                                <span class="nk-menu-text">Médicaments</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'mouvement-stock' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-arrow-down-up-across-line"></i></span>#}
+{#                                <span class="nk-menu-text">Mouvement de stock</span>#}
+{#                            </a>#}
+{#                        </li>     #}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'rendezvous_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-calendar"></i></span>#}
+{#                                <span class="nk-menu-text">Rendez-vous</span>#}
+{#                            </a>#}
+{#                        </li>     #}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'commandes-list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-basket-shopping"></i></span>#}
+{#                                <span class="nk-menu-text">Commandes</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                     <li class="nk-menu-item">#}
+{#                            <a href="#" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-chart-bar"></i></span>#}
+{#                                <span class="nk-menu-text">Rapports</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{##}
+{#                      <!-- Section Parametres -->#}
+{#                        <li class="nk-menu-heading">#}
+{#                            <h6 class="overline-title text-primary-alt">Paramètres</h6>#}
+{#                        </li>#}
+{#                        <li class="nk-menu-item">#}
+{#                            <a href="{% url 'employee_list' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-user-circle"></i></span>#}
+{#                                <span class="nk-menu-text">Gestion des Employees</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    <li class="nk-menu-item">#}
+{#                            <a href="{% url 'user_role' %}" class="nk-menu-link">#}
+{#                                <span class="nk-menu-icon"><i class="fa-solid fa-user-secret"></i></span>#}
+{#                                <span class="nk-menu-text">Gestion des Rôles</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                    <!-- .nk-menu -->#}
+{#                </div>#}
+{#                <!-- .nk-sidebar-menu -->#}
+{#            </div>#}
+{#            <!-- .nk-sidebar-content -->#}
+{#        </div>#}
+{#        <!-- .nk-sidebar-body -->#}
+{#    </div>#}
+{#    <!-- .nk-sidebar-element -->#}
+{#</div>#}
+{#<!-- sidebar @e -->#}
