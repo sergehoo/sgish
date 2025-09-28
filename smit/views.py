@@ -979,16 +979,6 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
         context['case_contacts'] = self.object.case_contacts.all()
         context['cascontactsForm'] = CasContactForm()
 
-        # Données des spécialistes
-        context['specialist_consultations'] = specialist_consultations
-        context['specialist_exams'] = specialist_exams,
-        context['specialist_prescriptions'] = specialist_prescriptions,
-        context['specialist_doctors'] = specialist_doctors,
-        context['specialist_recommendations'] = specialist_recommendations,
-        context['active_specialist_prescriptions'] = active_specialist_prescriptions,
-        context['active_suivis'] = active_suivis,
-        context['pending_specialist_exams'] = pending_specialist_exams,
-
         # Ajouter les hospitalisations
         hospitalizations = patient.hospitalized.all().prefetch_related(
             'indicateurs_biologiques',

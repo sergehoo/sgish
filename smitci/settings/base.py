@@ -56,27 +56,53 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django_errors.log'),  # Adjusted path
-        },
-    },
+# --- Logging paths & flags ---
+DJANGO_LOG_DIR = os.environ.get("DJANGO_LOG_DIR", os.path.join(BASE_DIR, "logs"))
+USE_FILE_LOGS = os.environ.get("USE_FILE_LOGS", "1") == "1"
 
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
+# Crée le dossier côté code (sécurité supplémentaire si l'entrypoint ne l'a pas fait)
+os.makedirs(DJANGO_LOG_DIR, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "[{levelname}] {asctime} {name} - {message}", "style": "{"},
+        "simple": {"format": "[{levelname}] {name} - {message}", "style": "{"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
         },
-        'django.security': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+        # Le handler fichier n'est activé que si USE_FILE_LOGS=1
+        **({
+            "file": {
+                "level": "ERROR",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": os.path.join(DJANGO_LOG_DIR, "django_errors.log"),
+                "maxBytes": 5 * 1024 * 1024,
+                "backupCount": 5,
+                "encoding": "utf-8",
+                "formatter": "verbose",
+            }
+        } if USE_FILE_LOGS else {})
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"] + (["file"] if USE_FILE_LOGS else []),
+            "level": "INFO",
+            "propagate": True,
+        },
+        "django.request": {
+            "handlers": ["console"] + (["file"] if USE_FILE_LOGS else []),
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["console"] + (["file"] if USE_FILE_LOGS else []),
+            "level": "WARNING",
+            "propagate": True,
         },
     },
 }

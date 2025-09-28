@@ -50,8 +50,10 @@ services:
       --log-level warning
     env_file: [.env]
     environment:
-      RUN_MIGRATIONS: "1"
-      RUN_COLLECTSTATIC: "1"
+      - RUN_MIGRATIONS=1
+      - RUN_COLLECTSTATIC=1
+      - DJANGO_LOG_DIR=/chu-app/smitci/logs
+      - USE_FILE_LOGS=1
     volumes:
       - .:/chu-app
       - static_volume:/chu-app/static

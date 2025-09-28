@@ -30,6 +30,14 @@ PY
   done
 fi
 
+# --- Préparer le répertoire des logs Django (avant tout import de settings) ---
+DJANGO_LOG_DIR="${DJANGO_LOG_DIR:-/chu-app/smitci/logs}"
+echo "[entrypoint] Ensuring log dir: ${DJANGO_LOG_DIR}"
+mkdir -p "${DJANGO_LOG_DIR}" || true
+touch "${DJANGO_LOG_DIR}/django_errors.log" || true
+chmod 664 "${DJANGO_LOG_DIR}/django_errors.log" || true
+# chown -R appuser:appgroup "${DJANGO_LOG_DIR}" || true
+
 # --- Migrations / collectstatic contrôlés par variables ---
 if [[ "${RUN_MIGRATIONS:-0}" == "1" ]]; then
   echo "[entrypoint] manage.py migrate…"
