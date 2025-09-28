@@ -5,17 +5,17 @@
 <style>
   /* Design system amélioré */
   :root {
-    --primary: #4f46e5; 
-    --secondary: #06b6d4; 
-    --success: #16a34a; 
-    --warning: #f59e0b; 
-    --danger: #ef4444; 
+    --primary: #4f46e5;
+    --secondary: #06b6d4;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #ef4444;
     --dark: #0f172a;
     --light: #f8fafc;
     --gray: #64748b;
     --border: #e2e8f0;
   }
-  
+
   .dashboard-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -23,7 +23,7 @@
     padding: 1.5rem;
     margin-bottom: 1.5rem;
   }
-  
+
   .kpi-card {
     background: white;
     border-radius: 1rem;
@@ -33,12 +33,12 @@
     transition: transform 0.2s, box-shadow 0.2s;
     height: 100%;
   }
-  
+
   .kpi-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
   }
-  
+
   .kpi-icon {
     width: 48px;
     height: 48px;
@@ -49,26 +49,26 @@
     font-size: 1.25rem;
     margin-bottom: 1rem;
   }
-  
+
   .kpi-value {
     font-size: 1.75rem;
     font-weight: 800;
     line-height: 1;
     margin-bottom: 0.25rem;
   }
-  
+
   .kpi-label {
     font-size: 0.875rem;
     color: var(--gray);
     font-weight: 500;
   }
-  
+
   .kpi-detail {
     font-size: 0.75rem;
     color: var(--gray);
     margin-top: 0.5rem;
   }
-  
+
   .card-modern {
     background: white;
     border: 1px solid var(--border);
@@ -77,7 +77,7 @@
     height: 100%;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   }
-  
+
   .card-modern .card-header {
     padding: 1.25rem;
     background: var(--light);
@@ -86,17 +86,17 @@
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .card-modern .card-header h4 {
     margin: 0;
     font-weight: 700;
     font-size: 1.125rem;
   }
-  
+
   .card-modern .card-body {
     padding: 1.25rem;
   }
-  
+
   .table-modern th {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -105,13 +105,13 @@
     font-weight: 600;
     border-bottom: 1px solid var(--border);
   }
-  
+
   .table-modern td {
     font-weight: 500;
     color: var(--dark);
     border-bottom: 1px solid var(--border);
   }
-  
+
   .badge-modern {
     display: inline-block;
     padding: 0.25rem 0.75rem;
@@ -119,7 +119,7 @@
     font-size: 0.75rem;
     font-weight: 600;
   }
-  
+
   .filter-bar {
     background: white;
     border-radius: 0.75rem;
@@ -127,37 +127,37 @@
     border: 1px solid var(--border);
     margin-bottom: 1.5rem;
   }
-  
+
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
-  
+
   .chart-container {
     position: relative;
     height: 100%;
     min-height: 300px;
   }
-  
+
   .list-clean {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  
+
   .list-clean li {
     display: flex;
     justify-content: space-between;
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--border);
   }
-  
+
   .list-clean li:last-child {
     border-bottom: none;
   }
-  
+
   .trend-indicator {
     display: inline-flex;
     align-items: center;
@@ -166,12 +166,12 @@
     padding: 0.25rem 0.5rem;
     border-radius: 0.375rem;
   }
-  
+
   .trend-up {
     background: #dcfce7;
     color: #16a34a;
   }
-  
+
   .trend-down {
     background: #fee2e2;
     color: #dc2626;
@@ -186,7 +186,7 @@
       <div class="dashboard-header">
         <div class="d-flex flex-wrap align-items-center justify-content-between">
           <div>
-            <h1 class="h2 mb-1">CHU Cocody — Tableau de bord</h1>
+            <h1 class="h2 mb-1 text-white">CHU Cocody — Tableau de bord</h1>
             <p class="mb-0 opacity-75">Bienvenue sur le tableau de bord KENEYA · <span class="badge-modern" style="background:rgba(255,255,255,0.2); color:white">National</span></p>
           </div>
           <div class="mt-2 mt-md-0">
@@ -237,7 +237,7 @@
       <div class="stats-grid">
         <div class="kpi-card">
           <div class="kpi-icon" style="background:linear-gradient(135deg, #6366f1, #4338ca); color:white;">
-            👥
+            <i class="fas fa-users-line text-lg"></i>
           </div>
           <div class="kpi-value text-primary">{{ total_patients|default:0 }}</div>
           <div class="kpi-label">Total Patients</div>
@@ -245,10 +245,10 @@
             Hommes: {{ total_patients_homme|default:0 }} · Femmes: {{ total_patients_femme|default:0 }}
           </div>
         </div>
-        
+
         <div class="kpi-card">
           <div class="kpi-icon" style="background:linear-gradient(135deg, #06b6d4, #0891b2); color:white;">
-            📅
+            <i class="fas fa-calendar text-lg"></i>
           </div>
           <div class="kpi-value text-info">{{ total_scheduled_appointments|default:0 }}</div>
           <div class="kpi-label">Rendez-vous planifiés</div>
@@ -256,10 +256,10 @@
             <span class="trend-indicator trend-up">+12% vs semaine dernière</span>
           </div>
         </div>
-        
+
         <div class="kpi-card">
           <div class="kpi-icon" style="background:linear-gradient(135deg, #f59e0b, #f97316); color:white;">
-            🏥
+           <i class="fas fa-hospital-symbol text-lg"></i>
           </div>
           <div class="kpi-value text-warning">{{ current_hospitalizations|default:0 }}</div>
           <div class="kpi-label">Hospitalisations en cours</div>
@@ -267,10 +267,10 @@
             Taux d'occupation: {{ occupancy_rate|default:"0" }}%
           </div>
         </div>
-        
+
         <div class="kpi-card">
           <div class="kpi-icon" style="background:linear-gradient(135deg, #16a34a, #22c55e); color:white;">
-            🎂
+            <i class="fas fa-cake-candles text-lg"></i>
           </div>
           <div class="kpi-value text-success">{{ average_age|floatformat:0|default:"-" }}</div>
           <div class="kpi-label">Âge moyen</div>
@@ -436,7 +436,7 @@
     }
     updateTime();
     setInterval(updateTime, 60000);
-    
+
     // Graphique des hospitalisations (ApexCharts)
     fetch("{% url 'hospitalization_chart_data' %}")
       .then(response => response.json())
@@ -508,7 +508,7 @@
       })
       .catch(error => {
         console.error("Erreur lors du chargement des données d'hospitalisation:", error);
-        document.querySelector("#hospitalization_chart").innerHTML = 
+        document.querySelector("#hospitalization_chart").innerHTML =
           '<div class="text-center text-muted py-5">Erreur de chargement des données</div>';
       });
 
