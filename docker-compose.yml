@@ -103,7 +103,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: >
-      celery -A chu worker
+      celery -A smitci worker
       --loglevel=warning
       --concurrency=1 --autoscale=2,1
       --prefetch-multiplier=1 -Ofair
@@ -125,7 +125,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: >
-      celery -A chu beat
+      celery -A smitci beat
       --loglevel=warning
       --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file: [.env]

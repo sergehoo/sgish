@@ -41,17 +41,17 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'secret-key')
 # Cast manuel de DEBUG (les valeurs des .env sont des chaînes)
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["smitci.com", "www.smitci.com","127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1","afriqconsulting.store", "www.afriqconsulting.store",]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://smitci.com",
-    "https://www.smitci.com",
+    "https://afriqconsulting.store",
+    "https://www.afriqconsulting.store",
 
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://smitci.com",
-    "https://www.smitci.com",
+    "https://afriqconsulting.store",
+    "https://www.afriqconsulting.store",
 
 ]
 
