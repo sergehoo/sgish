@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="087d2814-3cad-4049-abc4-eba10f1f379b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/smit/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +278,7 @@
       <workItem from="1756932574404" duration="39781000" />
       <workItem from="1757900861151" duration="598000" />
       <workItem from="1758293535079" duration="15214000" />
-      <workItem from="1759060314355" duration="14947000" />
+      <workItem from="1759060314355" duration="15884000" />
     </task>
     <servers />
   </component>
@@ -305,7 +306,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/smit/views.py</url>
-          <line>1546</line>
+          <line>1505</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -370,7 +371,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/smit/views.py</url>
-          <line>1353</line>
+          <line>1312</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -425,7 +426,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/smit/views.py</url>
-          <line>1608</line>
+          <line>1567</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -440,12 +441,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/smit/views.py</url>
-          <line>2036</line>
+          <line>1995</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/smit/views.py</url>
-          <line>1491</line>
+          <line>1450</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

@@ -928,47 +928,6 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
             consultations = service.consultations.filter(patient=patient)
             services_with_consultations.append((service, consultations))
 
-            # Récupérer les consultations avec spécialistes
-            specialist_consultations = patient.consultation_set.filter(
-                specialty__isnull=False
-            ).select_related('specialty', 'doctor').prefetch_related(
-                'requested_exams', 'prescriptions'
-            ).order_by('-consultation_date')
-
-            # Récupérer les examens spécialisés
-            specialist_exams = patient.medical_exams.filter(
-                specialty__isnull=False
-            ).select_related('specialty', 'prescribed_by').order_by('-request_date')
-
-            # Récupérer les prescriptions spécialisées
-            specialist_prescriptions = patient.prescriptions.filter(
-                consultation__specialty__isnull=False
-            ).select_related('consultation__specialty')
-
-            # Récupérer les médecins spécialistes ayant suivi le patient
-            specialist_doctors = User.objects.filter(
-                consultation__patient=patient,
-                consultation__specialty__isnull=False
-            ).distinct()
-
-            # Récupérer les recommandations des spécialistes
-            specialist_recommendations = patient.specialist_recommendations.all().select_related(
-                'specialty', 'specialist'
-            ).order_by('-date')
-
-            # Compter les éléments actifs
-            active_specialist_prescriptions = specialist_prescriptions.filter(
-                status='active'
-            ).count()
-
-            active_suivis = patient.suivimedecin.filter(
-                status='in_progress'
-            ).count()
-
-            pending_specialist_exams = specialist_exams.filter(
-                status='pending'
-            ).count()
-
         context['services_with_consultations'] = services_with_consultations
 
         # Récupérer les éléments liés au patient

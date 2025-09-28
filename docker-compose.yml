@@ -74,15 +74,27 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      # Router HTTPS
-      - traefik.http.routers.chu.rule=Host(`afriqconsulting.store`)
+
+      # HTTP (80) -> redirect HTTPS
+      - traefik.http.routers.chu-web.rule=Host(`afriqconsulting.store`,`www.afriqconsulting.store`)
+      - traefik.http.routers.chu-web.entrypoints=web
+      - traefik.http.routers.chu-web.middlewares=chu-redirect-https
+      - traefik.http.middlewares.chu-redirect-https.redirectscheme.scheme=https
+
+      # HTTPS (443)
+      - traefik.http.routers.chu.rule=Host(`afriqconsulting.store`,`www.afriqconsulting.store`)
       - traefik.http.routers.chu.entrypoints=websecure
+      - traefik.http.routers.chu.tls=true
       - traefik.http.routers.chu.tls.certresolver=lets
-      # Service (port interne)
+
+      # Backend service (toujours HTTP vers Gunicorn)
       - traefik.http.services.chu.loadbalancer.server.port=8000
       - traefik.http.services.chu.loadbalancer.server.scheme=http
-      # Middlewares (doivent exister côté Traefik)
-      - traefik.http.routers.chu.middlewares=sec-headers@docker,compress@docker,ratelimit@docker
+
+      # (Optionnel) healthcheck L7 Traefik
+      - traefik.http.services.chu.loadbalancer.healthcheck.path=/healthz
+      - traefik.http.services.chu.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.chu.loadbalancer.healthcheck.timeout=2s
 
   celeryworker:
     build:
