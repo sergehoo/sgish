@@ -22,6 +22,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg62-turbo libpng16-16 fonts-dejavu-core fonts-liberation \
     # Outils utiles
     postgresql-client \
+ && rm -rf /var/lib/apt/lists/* \
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdal-bin libgdal-dev libgeos-dev libproj-dev \
+    build-essential libpq-dev \
  && rm -rf /var/lib/apt/lists/*
 
 # ---- GDAL/PROJ env
