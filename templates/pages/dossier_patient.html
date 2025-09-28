@@ -886,7 +886,7 @@
                                         </div>
                                         <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
                                     </a>
-                                    <div class="accordion-body collapse {% if forloop.first %}show{% endif %}"
+                                    <div class="accordion-body {% if forloop.first %}show{% endif %}"
                                          id="accordion-item-hosp-{{ hospitalization.id }}"
                                          data-parent="#accordion-hospitalization">
                                         <div class="accordion-inner">
@@ -1141,7 +1141,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                  <!-- Spécialité Tab -->
                    <!-- Spécialité Tab -->
 <div class="tab-pane fade" id="tabSpecialist">
@@ -1293,7 +1293,7 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Examens demandés -->
                                     {% if consultation.requested_exams.all %}
                                     <div class="mt-3">
@@ -1419,7 +1419,7 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <span class="badge 
+                                        <span class="badge
                                             {% if suivi.status == 'completed' %}badge-success
                                             {% elif suivi.status == 'in_progress' %}badge-primary
                                             {% elif suivi.status == 'pending' %}badge-warning
@@ -1471,7 +1471,7 @@
                         <div class="col-lg-4 col-md-6 mb-3">
                             <div class="info-widget">
                                 <div class="info-widget-header">
-                                    <div class="info-widget-icon 
+                                    <div class="info-widget-icon
                                         {% if exam.status == 'completed' %}bg-success
                                         {% elif exam.status == 'in_progress' %}bg-primary
                                         {% elif exam.status == 'pending' %}bg-warning
@@ -1487,7 +1487,7 @@
                                     <div class="exam-details">
                                         <p class="mb-1"><strong>Prescrit par:</strong> Dr. {{ exam.prescribed_by.get_full_name }}</p>
                                         <p class="mb-1"><strong>Date:</strong> {{ exam.request_date|date:"d/m/Y" }}</p>
-                                        <p class="mb-1"><strong>Statut:</strong> 
+                                        <p class="mb-1"><strong>Statut:</strong>
                                             <span class="badge badge-{{ exam.status }}">
                                                 {{ exam.get_status_display }}
                                             </span>
@@ -1641,24 +1641,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const specialty = $('#specialtyFilter').val();
         const status = $('#statusFilter').val();
         const period = $('#periodFilter').val();
-        
+
         // Filtrer les consultations
         $('.specialist-consultation').each(function() {
             const consultationSpecialty = $(this).data('specialty');
             const consultationStatus = $(this).data('status');
             const showSpecialty = (specialty === 'all' || consultationSpecialty === specialty);
             const showStatus = (status === 'all' || consultationStatus === status);
-            
+
             $(this).toggle(showSpecialty && showStatus);
         });
-        
+
         // Filtrer les suivis
         $('.specialist-followup').each(function() {
             const followupSpecialty = $(this).data('specialty');
             const followupStatus = $(this).data('status');
             const showSpecialty = (specialty === 'all' || followupSpecialty === specialty);
             const showStatus = (status === 'all' || followupStatus === status);
-            
+
             $(this).toggle(showSpecialty && showStatus);
         });
     });
