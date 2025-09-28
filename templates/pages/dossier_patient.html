@@ -12,7 +12,7 @@
         --info-color: #17a2b8;
         --light-color: #f8f9fa;
         --dark-color: #343a40;
-        --gradient-primary: linear-gradient(135deg, #4a6cf7 0%, #6a11cb 100%);
+        --gradient-primary: linear-gradient(135deg, #031d80 0%, #c0d6ef 100%);
         --gradient-success: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         --gradient-danger: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
         --gradient-warning: linear-gradient(135deg, #ffc107 0%, #ff6b6b 100%);
@@ -72,7 +72,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('{% static "images/medical-pattern.png" %}') center/cover;
+        background: url('{% static "images/medical-pattern.webp" %}') center/cover;
         opacity: 0.1;
     }
 
@@ -384,14 +384,14 @@
                         {% endif %}
 
                         <div>
-                            <h3 class="nk-block-title page-title patient-title animate__animated animate__fadeIn">
-                                Patient / <strong class="text-primary">{{ patientsdetail.nom }} {{ patientsdetail.prenoms }}</strong>
-                            </h3>
-                            <div class="nk-block-des text-soft ml-0 ml-sm-5 animate__animated animate__fadeIn animate__delay-1s">
+                            <h1 class="nk-block-title page-title patient-title animate__animated animate__fadeIn">
+                                Patient | <strong class="text-white">{{ patientsdetail.nom }} {{ patientsdetail.prenoms }}</strong>
+                            </h1>
+                            <div class="nk-block-des text-white ml-0 ml-sm-5 animate__animated animate__fadeIn animate__delay-1s">
                                 <ul class="list-inline">
-                                    <li class="list-inline-item mr-3"><i class="fas fa-id-badge text-primary mr-1"></i> UUID: <span class="text-dark font-weight-bold">{{ patientsdetail.code_patient }}</span></li>
-                                    <li class="list-inline-item mr-3"><i class="fas fa-virus text-danger mr-1"></i> CODE VIH: <span class="text-dark font-weight-bold">{% if patientsdetail.code_vih %}{{ patientsdetail.code_vih }}{% else %}NEANT{% endif %}</span></li>
-                                    <li class="list-inline-item"><i class="fas fa-calendar-check text-success mr-1"></i> Dernière Visite: <span class="text-dark font-weight-bold">15 Feb, 2019 01:02 PM</span></li>
+                                    <li class="list-inline-item mr-3"><i class="fas fa-id-badge text-primary mr-1"></i> UUID: <span class="text-warning font-weight-bold">{{ patientsdetail.code_patient }}</span></li>
+                                    <li class="list-inline-item mr-3"><i class="fas fa-virus text-warning mr-1"></i> N° CMU: <span class="text-warning font-weight-bold">{% if patientsdetail.cmu %}{{ patientsdetail.cmu }}{% else %}NEANT{% endif %}</span></li>
+                                    <li class="list-inline-item"><i class="fas fa-calendar-check text-success mr-1"></i> Dernière Visite: <span class="text-warning font-weight-bold">15 Feb, 2019 01:02 PM</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -399,7 +399,7 @@
 
                     <div class="nk-block-head-content animate__animated animate__fadeInRight">
                         <button class="btn btn-outline-light bg-white d-none d-sm-inline-flex mr-3 print-btn">
-                            <em class="icon ni ni-printer-fill mr-1"></em><span>Imprimer</span>
+                            <em class="icon ni ni-printer-fill mr-1"></em>
                         </button>
                         <a href="/" class="btn btn-outline-light bg-white d-none d-sm-inline-flex back-btn">
                             <em class="icon ni ni-arrow-left mr-1"></em><span>Retour</span>
@@ -1141,6 +1141,538 @@
                             </div>
                         </div>
                     </div>
+                
+                 <!-- Spécialité Tab -->
+                   <!-- Spécialité Tab -->
+<div class="tab-pane fade" id="tabSpecialist">
+    <div class="row">
+        <!-- Statistiques des spécialités -->
+        <div class="col-12 mb-4">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ specialist_consultations.count }}</div>
+                    <div class="stat-label">Consultations Spécialistes</div>
+                    <div class="stat-trend text-info">
+                        <i class="fas fa-user-md mr-1"></i> {{ specialist_doctors.count }} spécialistes
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ specialist_prescriptions.count }}</div>
+                    <div class="stat-label">Prescriptions Spécialisées</div>
+                    <div class="stat-trend text-success">
+                        <i class="fas fa-pills mr-1"></i> {{ active_specialist_prescriptions }} actives
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ specialist_exams.count }}</div>
+                    <div class="stat-label">Examens Spécialisés</div>
+                    <div class="stat-trend text-warning">
+                        <i class="fas fa-flask mr-1"></i> {{ pending_specialist_exams }} en attente
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ suivis.count }}</div>
+                    <div class="stat-label">Suivis Spécialisés</div>
+                    <div class="stat-trend text-primary">
+                        <i class="fas fa-calendar-check mr-1"></i> {{ active_suivis }} en cours
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres par spécialité -->
+        <div class="col-12 mb-4">
+            <div class="medical-card">
+                <div class="medical-card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-filter mr-2 text-primary"></i>
+                        Filtres par Spécialité
+                    </h5>
+                </div>
+                <div class="medical-card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Spécialité</label>
+                            <select class="form-control" id="specialtyFilter">
+                                <option value="all">Toutes les spécialités</option>
+                                <option value="gynecology">Gynécologie</option>
+                                <option value="ophthalmology">Ophtalmologie</option>
+                                <option value="pediatrics">Pédiatrie</option>
+                                <option value="dentistry">Dentisterie</option>
+                                <option value="cardiology">Cardiologie</option>
+                                <option value="dermatology">Dermatologie</option>
+                                <option value="neurology">Neurologie</option>
+                                <option value="orthopedics">Orthopédie</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Statut</label>
+                            <select class="form-control" id="statusFilter">
+                                <option value="all">Tous les statuts</option>
+                                <option value="completed">Terminé</option>
+                                <option value="in_progress">En cours</option>
+                                <option value="pending">En attente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Période</label>
+                            <select class="form-control" id="periodFilter">
+                                <option value="all">Toute période</option>
+                                <option value="last_month">Dernier mois</option>
+                                <option value="last_3_months">3 derniers mois</option>
+                                <option value="last_year">Dernière année</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button class="btn btn-primary-modern w-100" id="applyFilters">
+                                <i class="fas fa-search mr-1"></i> Appliquer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consultations avec spécialistes -->
+        <div class="col-12 mb-4">
+            <div class="medical-card">
+                <div class="medical-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-stethoscope mr-2 text-primary"></i>
+                        Consultations avec Spécialistes
+                    </h5>
+                    <span class="badge badge-primary">{{ specialist_consultations.count }} consultations</span>
+                </div>
+                <div class="medical-card-body">
+                    {% if specialist_consultations %}
+                    <div class="accordion" id="specialistConsultationsAccordion">
+                        {% for consultation in specialist_consultations %}
+                        <div class="accordion-item specialist-consultation" data-specialty="{{ consultation.specialty.slug }}" data-status="{{ consultation.status }}">
+                            <h2 class="accordion-header" id="headingSpec{{ consultation.id }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpec{{ consultation.id }}" aria-expanded="false" aria-controls="collapseSpec{{ consultation.id }}">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ consultation.specialty.name }}</strong>
+                                            <div class="text-muted small">
+                                                Dr. {{ consultation.doctor.get_full_name|default:consultation.doctor.username }}
+                                                | {{ consultation.consultation_date|date:"d/m/Y H:i" }}
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge badge-{{ consultation.status }} me-2">
+                                                {{ consultation.get_status_display }}
+                                            </span>
+                                            <br>
+                                            <small class="text-muted">{{ consultation.specialty.department }}</small>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapseSpec{{ consultation.id }}" class="accordion-collapse collapse" aria-labelledby="headingSpec{{ consultation.id }}" data-bs-parent="#specialistConsultationsAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Informations de la consultation</h6>
+                                            <p><strong>Spécialité:</strong> {{ consultation.specialty.name }}</p>
+                                            <p><strong>Médecin:</strong> Dr. {{ consultation.doctor.get_full_name|default:consultation.doctor.username }}</p>
+                                            <p><strong>Date:</strong> {{ consultation.consultation_date|date:"d/m/Y H:i" }}</p>
+                                            <p><strong>Raison:</strong> {{ consultation.reason }}</p>
+                                            <p><strong>Service:</strong> {{ consultation.specialty.department }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Diagnostic & Traitement</h6>
+                                            <div class="diagnosis-content mb-3">
+                                                <strong>Diagnostic:</strong>
+                                                {{ consultation.diagnosis|safe|default:"Aucun diagnostic" }}
+                                            </div>
+                                            {% if consultation.treatment_plan %}
+                                            <div class="treatment-content">
+                                                <strong>Plan de traitement:</strong>
+                                                {{ consultation.treatment_plan|safe }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Examens demandés -->
+                                    {% if consultation.requested_exams.all %}
+                                    <div class="mt-3">
+                                        <h6>Examens demandés</h6>
+                                        <div class="row">
+                                            {% for exam in consultation.requested_exams.all %}
+                                            <div class="col-md-6 mb-2">
+                                                <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+                                                    <span>{{ exam.name }}</span>
+                                                    <span class="badge badge-{{ exam.status }}">{{ exam.get_status_display }}</span>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <!-- Prescriptions spécialisées -->
+                                    {% if consultation.prescriptions.all %}
+                                    <div class="mt-3">
+                                        <h6>Prescriptions spécialisées</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Médicament</th>
+                                                        <th>Posologie</th>
+                                                        <th>Durée</th>
+                                                        <th>Statut</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for prescription in consultation.prescriptions.all %}
+                                                    <tr>
+                                                        <td>{{ prescription.medication.nom }}</td>
+                                                        <td>{{ prescription.posology }}</td>
+                                                        <td>{{ prescription.duration }} jours</td>
+                                                        <td>
+                                                            <span class="badge badge-{{ prescription.status }}">
+                                                                {{ prescription.get_status_display }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-user-md fa-3x mb-3"></i>
+                        <p>Aucune consultation avec un spécialiste</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Suivis spécialisés -->
+        <div class="col-12 mb-4">
+            <div class="medical-card">
+                <div class="medical-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-calendar-check mr-2 text-primary"></i>
+                        Suivis Spécialisés
+                    </h5>
+                    <span class="badge badge-success">{{ suivis.count }} suivis</span>
+                </div>
+                <div class="medical-card-body">
+                    {% if suivis %}
+                    <div class="table-responsive">
+                        <table class="table table-modern" id="suivisTable">
+                            <thead>
+                                <tr>
+                                    <th>Activité</th>
+                                    <th>Spécialité</th>
+                                    <th>Service</th>
+                                    <th>Spécialiste</th>
+                                    <th>Date Début</th>
+                                    <th>Date Fin</th>
+                                    <th>Prochaine séance</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for suivi in suivis %}
+                                <tr class="specialist-followup" data-specialty="{{ suivi.specialty.slug|default:'general' }}" data-status="{{ suivi.status }}">
+                                    <td>
+                                        <strong>{{ suivi.activite.nom }}</strong>
+                                        {% if suivi.description %}
+                                        <br><small class="text-muted">{{ suivi.description|truncatewords:10 }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if suivi.specialty %}
+                                        <span class="badge badge-info">{{ suivi.specialty.name }}</span>
+                                        {% else %}
+                                        <span class="badge badge-secondary">Général</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ suivi.services.nom }}</td>
+                                    <td>
+                                        {% if suivi.specialist %}
+                                        Dr. {{ suivi.specialist.get_full_name|default:suivi.specialist.username }}
+                                        {% else %}
+                                        <span class="text-muted">Non assigné</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ suivi.date_debut|date:"d/m/Y" }}</td>
+                                    <td>{{ suivi.date_fin|date:"d/m/Y" }}</td>
+                                    <td>
+                                        {% if suivi.next_session %}
+                                        {{ suivi.next_session|date:"d/m/Y" }}
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if suivi.status == 'completed' %}badge-success
+                                            {% elif suivi.status == 'in_progress' %}badge-primary
+                                            {% elif suivi.status == 'pending' %}badge-warning
+                                            {% else %}badge-secondary{% endif %}">
+                                            {{ suivi.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" data-toggle="tooltip" title="Voir détails">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            {% if suivi.status == 'in_progress' %}
+                                            <button class="btn btn-outline-success" data-toggle="tooltip" title="Marquer comme terminé">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-calendar-check fa-3x mb-3"></i>
+                        <p>Aucun suivi spécialisé programmé</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Examens spécialisés -->
+        <div class="col-12 mb-4">
+            <div class="medical-card">
+                <div class="medical-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-flask mr-2 text-primary"></i>
+                        Examens Spécialisés
+                    </h5>
+                    <span class="badge badge-warning">{{ specialist_exams.count }} examens</span>
+                </div>
+                <div class="medical-card-body">
+                    {% if specialist_exams %}
+                    <div class="row">
+                        {% for exam in specialist_exams %}
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <div class="info-widget">
+                                <div class="info-widget-header">
+                                    <div class="info-widget-icon 
+                                        {% if exam.status == 'completed' %}bg-success
+                                        {% elif exam.status == 'in_progress' %}bg-primary
+                                        {% elif exam.status == 'pending' %}bg-warning
+                                        {% else %}bg-secondary{% endif %}">
+                                        <i class="fas fa-microscope"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ exam.name }}</h6>
+                                        <small class="text-muted">{{ exam.specialty.name }}</small>
+                                    </div>
+                                </div>
+                                <div class="info-widget-body">
+                                    <div class="exam-details">
+                                        <p class="mb-1"><strong>Prescrit par:</strong> Dr. {{ exam.prescribed_by.get_full_name }}</p>
+                                        <p class="mb-1"><strong>Date:</strong> {{ exam.request_date|date:"d/m/Y" }}</p>
+                                        <p class="mb-1"><strong>Statut:</strong> 
+                                            <span class="badge badge-{{ exam.status }}">
+                                                {{ exam.get_status_display }}
+                                            </span>
+                                        </p>
+                                        {% if exam.results %}
+                                        <p class="mb-0"><strong>Résultats:</strong> {{ exam.results|truncatewords:8 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="mt-2">
+                                        {% if exam.result_file %}
+                                        <a href="{{ exam.result_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                            <i class="fas fa-download mr-1"></i> Télécharger
+                                        </a>
+                                        {% endif %}
+                                        <button class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#examModal{{ exam.id }}">
+                                            <i class="fas fa-info-circle mr-1"></i> Détails
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-flask fa-3x mb-3"></i>
+                        <p>Aucun examen spécialisé enregistré</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommandations spécialisées -->
+        <div class="col-12">
+            <div class="medical-card">
+                <div class="medical-card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-file-medical-alt mr-2 text-primary"></i>
+                        Recommandations des Spécialistes
+                    </h5>
+                </div>
+                <div class="medical-card-body">
+                    {% if specialist_recommendations %}
+                    <div class="row">
+                        {% for recommendation in specialist_recommendations %}
+                        <div class="col-12 mb-3">
+                            <div class="recommendation-item border-left-4 border-primary pl-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="text-primary mb-0">
+                                        <i class="fas fa-user-md mr-2"></i>
+                                        {{ recommendation.specialty.name }}
+                                    </h6>
+                                    <small class="text-muted">{{ recommendation.date|date:"d/m/Y" }}</small>
+                                </div>
+                                <p class="mb-2"><strong>Dr. {{ recommendation.specialist.get_full_name }}:</strong></p>
+                                <div class="recommendation-content bg-light p-3 rounded">
+                                    {{ recommendation.content|safe }}
+                                </div>
+                                {% if recommendation.follow_up_required %}
+                                <div class="mt-2">
+                                    <small class="text-warning">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        Suivi requis dans {{ recommendation.follow_up_months }} mois
+                                    </small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-file-medical-alt fa-3x mb-3"></i>
+                        <p>Aucune recommandation spécialisée</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour les détails d'examen -->
+{% for exam in specialist_exams %}
+<div class="modal fade" id="examModal{{ exam.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Détails de l'examen: {{ exam.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Spécialité:</strong> {{ exam.specialty.name }}</p>
+                        <p><strong>Prescrit par:</strong> Dr. {{ exam.prescribed_by.get_full_name }}</p>
+                        <p><strong>Date de prescription:</strong> {{ exam.request_date|date:"d/m/Y" }}</p>
+                        <p><strong>Date de réalisation:</strong> {{ exam.exam_date|date:"d/m/Y"|default:"Non réalisé" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Statut:</strong> <span class="badge badge-{{ exam.status }}">{{ exam.get_status_display }}</span></p>
+                        <p><strong>Urgence:</strong> <span class="badge badge-{{ exam.urgency }}">{{ exam.get_urgency_display }}</span></p>
+                        <p><strong>Coût:</strong> {{ exam.cost|default:"0" }} FCFA</p>
+                    </div>
+                </div>
+                {% if exam.notes %}
+                <div class="mt-3">
+                    <h6>Notes:</h6>
+                    <div class="bg-light p-3 rounded">
+                        {{ exam.notes|safe }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if exam.results %}
+                <div class="mt-3">
+                    <h6>Résultats:</h6>
+                    <div class="bg-light p-3 rounded">
+                        {{ exam.results|safe }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if exam.interpretation %}
+                <div class="mt-3">
+                    <h6>Interprétation:</h6>
+                    <div class="bg-light p-3 rounded">
+                        {{ exam.interpretation|safe }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                {% if exam.result_file %}
+                <a href="{{ exam.result_file.url }}" class="btn btn-primary" target="_blank">
+                    <i class="fas fa-download mr-1"></i> Télécharger le rapport
+                </a>
+                {% endif %}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filtrage des données
+    $('#applyFilters').click(function() {
+        const specialty = $('#specialtyFilter').val();
+        const status = $('#statusFilter').val();
+        const period = $('#periodFilter').val();
+        
+        // Filtrer les consultations
+        $('.specialist-consultation').each(function() {
+            const consultationSpecialty = $(this).data('specialty');
+            const consultationStatus = $(this).data('status');
+            const showSpecialty = (specialty === 'all' || consultationSpecialty === specialty);
+            const showStatus = (status === 'all' || consultationStatus === status);
+            
+            $(this).toggle(showSpecialty && showStatus);
+        });
+        
+        // Filtrer les suivis
+        $('.specialist-followup').each(function() {
+            const followupSpecialty = $(this).data('specialty');
+            const followupStatus = $(this).data('status');
+            const showSpecialty = (specialty === 'all' || followupSpecialty === specialty);
+            const showStatus = (status === 'all' || followupStatus === status);
+            
+            $(this).toggle(showSpecialty && showStatus);
+        });
+    });
+
+    // Tri des tables
+    $('#suivisTable').DataTable({
+        "pageLength": 10,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        "order": [[4, "desc"]] // Tri par date début décroissante
+    });
+});
+</script>
                 </div>
             </div>
         </div>

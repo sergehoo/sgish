@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
 from django.db.models import Count, Avg, Prefetch, Q
@@ -928,6 +929,47 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
             consultations = service.consultations.filter(patient=patient)
             services_with_consultations.append((service, consultations))
 
+            # Récupérer les consultations avec spécialistes
+            specialist_consultations = patient.consultation_set.filter(
+                specialty__isnull=False
+            ).select_related('specialty', 'doctor').prefetch_related(
+                'requested_exams', 'prescriptions'
+            ).order_by('-consultation_date')
+
+            # Récupérer les examens spécialisés
+            specialist_exams = patient.medical_exams.filter(
+                specialty__isnull=False
+            ).select_related('specialty', 'prescribed_by').order_by('-request_date')
+
+            # Récupérer les prescriptions spécialisées
+            specialist_prescriptions = patient.prescriptions.filter(
+                consultation__specialty__isnull=False
+            ).select_related('consultation__specialty')
+
+            # Récupérer les médecins spécialistes ayant suivi le patient
+            specialist_doctors = User.objects.filter(
+                consultation__patient=patient,
+                consultation__specialty__isnull=False
+            ).distinct()
+
+            # Récupérer les recommandations des spécialistes
+            specialist_recommendations = patient.specialist_recommendations.all().select_related(
+                'specialty', 'specialist'
+            ).order_by('-date')
+
+            # Compter les éléments actifs
+            active_specialist_prescriptions = specialist_prescriptions.filter(
+                status='active'
+            ).count()
+
+            active_suivis = patient.suivimedecin.filter(
+                status='in_progress'
+            ).count()
+
+            pending_specialist_exams = specialist_exams.filter(
+                status='pending'
+            ).count()
+
         context['services_with_consultations'] = services_with_consultations
 
         # Récupérer les éléments liés au patient
@@ -936,6 +978,16 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
         context["suivis"] = patient.suivimedecin.all()
         context['case_contacts'] = self.object.case_contacts.all()
         context['cascontactsForm'] = CasContactForm()
+
+        # Données des spécialistes
+        context['specialist_consultations'] = specialist_consultations
+        context['specialist_exams'] = specialist_exams,
+        context['specialist_prescriptions'] = specialist_prescriptions,
+        context['specialist_doctors'] = specialist_doctors,
+        context['specialist_recommendations'] = specialist_recommendations,
+        context['active_specialist_prescriptions'] = active_specialist_prescriptions,
+        context['active_suivis'] = active_suivis,
+        context['pending_specialist_exams'] = pending_specialist_exams,
 
         # Ajouter les hospitalisations
         hospitalizations = patient.hospitalized.all().prefetch_related(

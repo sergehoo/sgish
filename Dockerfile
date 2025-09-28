@@ -35,7 +35,7 @@ ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
 RUN pip install --upgrade pip
 COPY requirements.txt /chu-app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-
+RUN mkdir -p /chu-app/smitci/logs
 # ⚠️ (Optionnel) torch & co → à mettre plutôt dans l'image worker
 # RUN pip install --no-cache-dir \
 #     "torch==2.2.2" "torchvision==0.17.2" \
