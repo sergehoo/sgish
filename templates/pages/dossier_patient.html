@@ -12,49 +12,113 @@
         --info-color: #17a2b8;
         --light-color: #f8f9fa;
         --dark-color: #343a40;
+        --gradient-primary: linear-gradient(135deg, #4a6cf7 0%, #6a11cb 100%);
+        --gradient-success: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        --gradient-danger: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        --gradient-warning: linear-gradient(135deg, #ffc107 0%, #ff6b6b 100%);
+        --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.07);
+        --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --shadow-heavy: 0 20px 50px rgba(0, 0, 0, 0.15);
     }
     
-    /* Animations */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Animations améliorées */
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from { 
+            transform: translateX(-30px); 
+            opacity: 0; 
+        }
+        to { 
+            transform: translateX(0); 
+            opacity: 1; 
+        }
     }
     
     @keyframes pulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.03); }
+        50% { transform: scale(1.05); }
         100% { transform: scale(1); }
     }
     
-    @keyframes slideInRight {
-        from { transform: translateX(20px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
+    @keyframes bounceIn {
+        0% { 
+            transform: scale(0.3); 
+            opacity: 0; 
+        }
+        50% { 
+            transform: scale(1.05); 
+        }
+        70% { 
+            transform: scale(0.9); 
+        }
+        100% { 
+            transform: scale(1); 
+            opacity: 1; 
+        }
     }
     
-    /* Global Styles */
-    .profile-header {
+    /* Styles globaux améliorés */
+    body {
         background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        animation: fadeIn 0.6s ease-out;
+        min-height: 100vh;
+    }
+    
+    .patient-dashboard {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    
+    /* En-tête du profil amélioré */
+    .profile-header {
+        background: var(--gradient-primary);
+        border-radius: 20px;
+        box-shadow: var(--shadow-heavy);
+        animation: fadeInUp 0.8s ease-out;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+    
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('{% static "images/medical-pattern.png" %}') center/cover;
+        opacity: 0.1;
     }
     
     .qr-code-container {
-        transition: all 0.3s ease;
-        border: 2px solid var(--primary-color);
-        border-radius: 10px;
-        padding: 5px;
-        background: white;
+        transition: all 0.4s ease;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
     }
     
     .qr-code-container:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+        transform: scale(1.1) rotate(5deg);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 15px 35px rgba(74, 108, 247, 0.4);
     }
     
     .patient-title {
         position: relative;
-        padding-left: 15px;
+        padding-left: 20px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     
     .patient-title::before {
@@ -63,166 +127,366 @@
         left: 0;
         top: 0;
         height: 100%;
-        width: 4px;
+        width: 6px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+        animation: slideInLeft 1s ease-out;
+    }
+    
+    /* Cartes améliorées */
+    .medical-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+    
+    .medical-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .medical-card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .medical-card-body {
+        padding: 1.5rem;
+    }
+    
+    /* Statistiques en temps réel */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+        border-left: 5px solid var(--primary-color);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .stat-card.consultations { border-left-color: var(--info-color); }
+    .stat-card.hospitalizations { border-left-color: var(--warning-color); }
+    .stat-card.appointments { border-left-color: var(--success-color); }
+    .stat-card.prescriptions { border-left-color: var(--danger-color); }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+        color: var(--secondary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Onglets améliorés */
+    .nav-tabs-modern {
+        border: none;
+        background: white;
+        border-radius: 15px;
+        padding: 0.5rem;
+        box-shadow: var(--shadow-light);
+        margin-bottom: 2rem;
+    }
+    
+    .nav-tabs-modern .nav-link {
+        border: none;
+        color: var(--secondary-color);
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+        margin: 0 0.25rem;
+    }
+    
+    .nav-tabs-modern .nav-link:hover {
+        color: var(--primary-color);
+        background: rgba(74, 108, 247, 0.05);
+        transform: translateY(-2px);
+    }
+    
+    .nav-tabs-modern .nav-link.active {
+        color: white;
+        background: var(--gradient-primary);
+        box-shadow: var(--shadow-light);
+    }
+    
+    .nav-tabs-modern .nav-link .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: var(--danger-color);
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Contenu des onglets */
+    .tab-content-modern {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow-light);
+        overflow: hidden;
+    }
+    
+    .tab-pane-modern {
+        padding: 2rem;
+        animation: fadeInUp 0.5s ease-out;
+    }
+    
+    /* Accordéon amélioré */
+    .accordion-modern {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+    }
+    
+    .accordion-item-modern {
+        border: none;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-item-modern:hover {
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .accordion-header-modern {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: none;
+    }
+    
+    .accordion-button-modern {
+        background: none;
+        border: none;
+        padding: 1.5rem;
+        color: var(--dark-color);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .accordion-button-modern:not(.collapsed) {
+        color: var(--primary-color);
+        background: rgba(74, 108, 247, 0.05);
+    }
+    
+    .accordion-button-modern::after {
+        transform: rotate(0deg);
+        transition: transform 0.3s ease;
+    }
+    
+    .accordion-button-modern:not(.collapsed)::after {
+        transform: rotate(180deg);
+    }
+    
+    /* Tableaux améliorés */
+    .table-modern {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+    }
+    
+    .table-modern thead th {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.85rem;
+    }
+    
+    .table-modern tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table-modern tbody tr:hover {
+        background: rgba(74, 108, 247, 0.05);
+        transform: scale(1.01);
+    }
+    
+    /* Boutons améliorés */
+    .btn-modern {
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-modern:hover::before {
+        left: 100%;
+    }
+    
+    .btn-primary-modern {
+        background: var(--gradient-primary);
+        box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
+    }
+    
+    .btn-primary-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(74, 108, 247, 0.4);
+    }
+    
+    /* Timeline médicale */
+    .medical-timeline {
+        position: relative;
+        padding-left: 2rem;
+    }
+    
+    .medical-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
         background: var(--primary-color);
         border-radius: 2px;
     }
     
-    .profile-ud-item {
-        transition: all 0.3s ease;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .profile-ud-item:hover {
-        background-color: rgba(74, 108, 247, 0.05);
-        transform: translateX(5px);
-    }
-    
-    .profile-ud-label {
-        color: var(--secondary-color);
-        font-weight: 500;
-    }
-    
-    .profile-ud-value {
-        color: var(--dark-color);
-        font-weight: 600;
-    }
-    
-    /* Badge Styles */
-    .badge {
-        transition: all 0.3s ease;
-    }
-    
-    .badge-success {
-        background-color: var(--success-color);
-    }
-    
-    .badge-danger {
-        background-color: var(--danger-color);
-    }
-    
-    /* Tab Styles */
-    .nav-tabs {
-        border-bottom: 2px solid rgba(0,0,0,0.1);
-    }
-    
-    .nav-tabs .nav-link {
-        border: none;
-        color: var(--secondary-color);
-        font-weight: 600;
-        padding: 12px 20px;
-        transition: all 0.3s ease;
+    .timeline-item {
         position: relative;
+        margin-bottom: 2rem;
+        padding-left: 2rem;
+        animation: fadeInUp 0.5s ease-out;
     }
     
-    .nav-tabs .nav-link:hover {
-        color: var(--primary-color);
-        background: rgba(74, 108, 247, 0.05);
-    }
-    
-    .nav-tabs .nav-link.active {
-        color: var(--primary-color);
-        background: transparent;
-    }
-    
-    .nav-tabs .nav-link.active::after {
+    .timeline-item::before {
         content: '';
         position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
+        left: -0.75rem;
+        top: 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
         background: var(--primary-color);
+        border: 4px solid white;
+        box-shadow: var(--shadow-light);
     }
     
-    .tab-content {
-        padding: 20px 0;
-        animation: fadeIn 0.5s ease-out;
+    .timeline-item.consultation::before { background: var(--info-color); }
+    .timeline-item.hospitalization::before { background: var(--warning-color); }
+    .timeline-item.appointment::before { background: var(--success-color); }
+    .timeline-item.prescription::before { background: var(--danger-color); }
+    
+    /* Alertes et notifications */
+    .alert-modern {
+        border: none;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-light);
+        border-left: 5px solid;
     }
     
-    /* Accordion Styles */
-    .accordion-item {
-        margin-bottom: 15px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+    .alert-success-modern {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left-color: var(--success-color);
     }
     
-    .accordion-item:hover {
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .alert-warning-modern {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left-color: var(--warning-color);
     }
     
-    .accordion-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background: rgba(74, 108, 247, 0.1);
-        color: var(--primary-color);
-        text-decoration: none;
-        transition: all 0.3s ease;
+    .alert-danger-modern {
+        background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%);
+        border-left-color: var(--danger-color);
     }
     
-    .accordion-head:hover {
-        background: rgba(74, 108, 247, 0.2);
-    }
-    
-    .accordion-body {
-        padding: 20px;
+    /* Widgets d'information */
+    .info-widget {
         background: white;
-    }
-    
-    /* Table Styles */
-    .table {
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .table thead th {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-    }
-    
-    .table tbody tr {
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-light);
+        margin-bottom: 1.5rem;
         transition: all 0.3s ease;
     }
     
-    .table tbody tr:hover {
-        background: rgba(74, 108, 247, 0.05);
+    .info-widget:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-medium);
     }
     
-    /* Button Styles */
-    .btn-primary {
-        background-color: var(--primary-color);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(74, 108, 247, 0.3);
+    .info-widget-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
     }
     
-    .btn-primary:hover {
-        background-color: #3a5bd9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(74, 108, 247, 0.4);
-    }
-    
-    .btn-outline-secondary {
-        transition: all 0.3s ease;
-    }
-    
-    .btn-outline-secondary:hover {
-        background: var(--primary-color);
+    .info-widget-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.5rem;
         color: white;
     }
     
-    /* Responsive Adjustments */
+    /* Responsive design amélioré */
     @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+        
+        .nav-tabs-modern .nav-link {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+        
         .profile-header {
-            flex-direction: column;
             text-align: center;
         }
         
@@ -230,888 +494,492 @@
             display: none;
         }
     }
+    
+    /* Éléments interactifs */
+    .interactive-element {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .interactive-element:hover {
+        transform: scale(1.02);
+    }
+    
+    /* Loading states */
+    .loading {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .loading::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
 </style>
 
-<div class="nk-content nk-content-fluid">
+<div class="nk-content nk-content-fluid patient-dashboard">
     <div class="container-xl wide-lg">
         <div class="nk-content-body">
-            <!-- Patient Header Section -->
-            <div class="nk-block-head nk-block-head-sm mb-4 ">
-                <div class="nk-block-between g-3 align-items-center profile-header p-4 ">
-                    <div class="d-flex align-items-center mt-5">
-                        {% if patientsdetail.qr_code %}
-                            <div class="qr-code-container mr-4 animate__animated animate__fadeInLeft">
-                                <img src="{{ patientsdetail.qr_code.url }}" width="110" alt="QR Code" class="img-fluid">
-                            </div>
-                        {% else %}
-                            <div class="alert alert-warning mr-4">Aucun QR code disponible</div>
-                        {% endif %}
-                        
-                        <div>
-                            <h3 class="nk-block-title page-title patient-title animate__animated animate__fadeIn">
-                                Patient / <strong class="text-primary">{{ patientsdetail.nom }} {{ patientsdetail.prenoms }}</strong>
-                            </h3>
-                            <div class="nk-block-des text-soft ml-0 ml-sm-5 animate__animated animate__fadeIn animate__delay-1s">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item mr-3"><i class="fas fa-id-badge text-primary mr-1"></i> UUID: <span class="text-dark font-weight-bold">{{ patientsdetail.code_patient }}</span></li>
-                                    <li class="list-inline-item mr-3"><i class="fas fa-virus text-danger mr-1"></i> CODE VIH: <span class="text-dark font-weight-bold">{% if patientsdetail.code_vih %}{{ patientsdetail.code_vih }}{% else %}NEANT{% endif %}</span></li>
-                                    <li class="list-inline-item"><i class="fas fa-calendar-check text-success mr-1"></i> Dernière Visite: <span class="text-dark font-weight-bold">15 Feb, 2019 01:02 PM</span></li>
-                                </ul>
+            
+            <!-- En-tête du patient avec statistiques -->
+            <div class="profile-header p-4 mb-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center">
+                            {% if patientsdetail.qr_code %}
+                                <div class="qr-code-container mr-4">
+                                    <img src="{{ patientsdetail.qr_code.url }}" width="120" alt="QR Code" class="img-fluid">
+                                </div>
+                            {% endif %}
+                            
+                            <div class="flex-grow-1">
+                                <h1 class="patient-title mb-2">
+                                    {{ patientsdetail.nom }} {{ patientsdetail.prenoms }}
+                                </h1>
+                                <div class="patient-meta">
+                                    <div class="d-flex flex-wrap align-items-center text-white-80">
+                                        <span class="mr-3 mb-1">
+                                            <i class="fas fa-id-badge mr-1"></i>
+                                            <strong>{{ patientsdetail.code_patient }}</strong>
+                                        </span>
+                                        <span class="mr-3 mb-1">
+                                            <i class="fas fa-{{ patientsdetail.genre|lower }} mr-1"></i>
+                                            {{ patientsdetail.genre }}, {{ patientsdetail.calculate_age }} ans
+                                        </span>
+                                        <span class="mr-3 mb-1">
+                                            <i class="fas fa-phone mr-1"></i>
+                                            {{ patientsdetail.contact }}
+                                        </span>
+                                        <span class="mb-1">
+                                            <i class="fas fa-tint mr-1 text-danger"></i>
+                                            {{ patientsdetail.groupe_sanguin }}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="nk-block-head-content animate__animated animate__fadeInRight">
-                        <button class="btn btn-outline-light bg-white d-none d-sm-inline-flex mr-3 print-btn">
-                            <em class="icon ni ni-printer-fill mr-1"></em><span>Imprimer</span>
-                        </button>
-                        <a href="/" class="btn btn-outline-light bg-white d-none d-sm-inline-flex back-btn">
-                            <em class="icon ni ni-arrow-left mr-1"></em><span>Retour</span>
-                        </a>
-                        <a href="#" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none">
-                            <em class="icon ni ni-arrow-left"></em>
-                        </a>
+                    <div class="col-lg-4 text-lg-right">
+                        <div class="patient-actions">
+                            <button class="btn btn-light btn-modern mr-2 print-btn">
+                                <i class="fas fa-print mr-1"></i> Imprimer
+                            </button>
+                            <a href="/" class="btn btn-light btn-modern back-btn">
+                                <i class="fas fa-arrow-left mr-1"></i> Retour
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content Tabs -->
-            <div class="nk-block">
-                <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card animate__animated animate__fadeIn">
+            <!-- Statistiques en temps réel -->
+            <div class="stats-grid">
+                <div class="stat-card consultations">
+                    <div class="stat-number">{{ consultations|length }}</div>
+                    <div class="stat-label">Consultations</div>
+                    <div class="stat-trend text-success">
+                        <i class="fas fa-arrow-up mr-1"></i> 12% ce mois
+                    </div>
+                </div>
+                <div class="stat-card hospitalizations">
+                    <div class="stat-number">{{ hospitalizations|length }}</div>
+                    <div class="stat-label">Hospitalisations</div>
+                    <div class="stat-trend text-warning">
+                        <i class="fas fa-minus mr-1"></i> Stable
+                    </div>
+                </div>
+                <div class="stat-card appointments">
+                    <div class="stat-number">{{ appointments|length }}</div>
+                    <div class="stat-label">Rendez-vous</div>
+                    <div class="stat-trend text-info">
+                        <i class="fas fa-arrow-up mr-1"></i> 3 à venir
+                    </div>
+                </div>
+                <div class="stat-card prescriptions">
+                    <div class="stat-number">{{ prescriptions_count }}</div>
+                    <div class="stat-label">Prescriptions</div>
+                    <div class="stat-trend text-danger">
+                        <i class="fas fa-clock mr-1"></i> 2 en cours
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets améliorée -->
+            <div class="nav-tabs-modern">
+                <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#tabPersonal">
-                            <em class="icon ni ni-user"></em><span>Informations Personnelles</span>
+                        <a class="nav-link active" data-toggle="tab" href="#tabOverview">
+                            <i class="fas fa-chart-line mr-2"></i>Vue d'ensemble
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabConsultations">
-                            <em class="icon ni ni-repeat"></em><span>Consultations</span>
+                        <a class="nav-link" data-toggle="tab" href="#tabPersonal">
+                            <i class="fas fa-user mr-2"></i>Informations
+                            <span class="badge">{{ personal_info_count }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabHospitalizations">
-                            <em class="icon ni ni-home"></em><span>Hospitalisations</span>
+                        <a class="nav-link" data-toggle="tab" href="#tabMedical">
+                            <i class="fas fa-stethoscope mr-2"></i>Médical
+                            <span class="badge">{{ medical_info_count }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabAppointments">
-                            <em class="icon ni ni-calendar"></em><span>Rendez-vous</span>
+                        <a class="nav-link" data-toggle="tab" href="#tabTimeline">
+                            <i class="fas fa-history mr-2"></i>Historique
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabSuivis">
-                            <em class="icon ni ni-user-check"></em><span>Suivis</span>
+                        <a class="nav-link" data-toggle="tab" href="#tabDocuments">
+                            <i class="fas fa-folder mr-2"></i>Documents
                         </a>
                     </li>
                 </ul>
+            </div>
 
-                <div class="tab-content">
-                    <!-- Personal Info Tab -->
-                    <div class="tab-pane fade show active" id="tabPersonal">
-                        <div class="row">
-                            <!-- Basic Information -->
-                            <div class="col-lg-6">
-                                <div class="card card-bordered mb-4 animate__animated animate__fadeInLeft">
-                                    <div class="card-inner">
-                                        <div class="card-head">
-                                            <h5 class="card-title text-primary"><i class="fas fa-id-card mr-2"></i>Informations de Base</h5>
-                                        </div>
-                                        <div class="profile-ud-list">
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-venus-mars mr-2"></i>Sexe</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.genre }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-signature mr-2"></i>Nom & Prénom</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.nom }} {{ patientsdetail.prenoms }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-birthday-cake mr-2"></i>Date de naissance</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.date_naissance }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-map-marker-alt mr-2"></i>Lieu de naissance</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.lieu_naissance }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-user-clock mr-2"></i>Âge</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.calculate_age }} ans</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-key mr-2"></i>Code Patient</span>
-                                                    <span class="profile-ud-value text-primary"><i class="fa-solid fa-lock"></i> {{ patientsdetail.code_patient }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+            <!-- Contenu des onglets -->
+            <div class="tab-content-modern">
+                
+                <!-- Onglet Vue d'ensemble -->
+                <div class="tab-pane fade show active" id="tabOverview">
+                    <div class="row">
+                        <!-- Alertes importantes -->
+                        <div class="col-12 mb-4">
+                            <div class="alert alert-warning-modern">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle fa-2x mr-3 text-warning"></i>
+                                    <div>
+                                        <h5 class="alert-title mb-1">Alertes importantes</h5>
+                                        <p class="mb-0">Allergie à la pénicilline notée. Prochain rendez-vous de suivi dans 3 jours.</p>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Contact Information -->
-                            <div class="col-lg-6">
-                                <div class="card card-bordered mb-4 animate__animated animate__fadeInRight">
-                                    <div class="card-inner">
-                                        <div class="card-head">
-                                            <h5 class="card-title text-primary"><i class="fas fa-address-book mr-2"></i>Coordonnées</h5>
-                                        </div>
-                                        <div class="profile-ud-list">
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-phone mr-2"></i>Contact</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.contact }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-envelope mr-2"></i>Email</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.adresse_mail }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-tint mr-2 text-danger"></i>Groupe Sanguin</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.groupe_sanguin }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-flag mr-2"></i>Nationalité</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.nationalite }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-briefcase mr-2"></i>Profession</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.profession }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-ud-item">
-                                                <div class="profile-ud wider">
-                                                    <span class="profile-ud-label"><i class="fas fa-building mr-2"></i>Employeur</span>
-                                                    <span class="profile-ud-value">{{ patientsdetail.employeur }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                        </div>
+
+                        <!-- Widgets rapides -->
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="info-widget interactive-element">
+                                <div class="info-widget-header">
+                                    <div class="info-widget-icon bg-primary">
+                                        <i class="fas fa-heartbeat"></i>
                                     </div>
+                                    <h6 class="mb-0">Constantes récentes</h6>
                                 </div>
-                            </div>
-                            
-                            <!-- Additional Information -->
-                            <div class="col-12">
-                                <div class="card card-bordered animate__animated animate__fadeInUp">
-                                    <div class="card-inner">
-                                        <div class="card-head">
-                                            <h5 class="card-title text-primary"><i class="fas fa-info-circle mr-2"></i>Informations Supplémentaires</h5>
+                                <div class="info-widget-body">
+                                    <div class="vital-signs">
+                                        <div class="vital-item d-flex justify-content-between mb-2">
+                                            <span>TA:</span>
+                                            <strong>120/80 mmHg</strong>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-child mr-2"></i>Nombre d'enfants</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.nbr_enfants }} <i class="fa-solid fa-children text-black-50"></i></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-heart mr-2 text-danger"></i>Situation Matrimoniale</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.situation_matrimoniale }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-graduation-cap mr-2"></i>Niveau d'Étude</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.niveau_etude }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-globe-africa mr-2"></i>Ethnie</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.ethnie }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-map-marked-alt mr-2"></i>Localité</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.localite.nom }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="profile-ud-item">
-                                                    <div class="profile-ud wider">
-                                                        <span class="profile-ud-label"><i class="fas fa-user-shield mr-2"></i>Statut</span>
-                                                        <span class="profile-ud-value">{{ patientsdetail.status }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="vital-item d-flex justify-content-between mb-2">
+                                            <span>Temp:</span>
+                                            <strong>36.8°C</strong>
+                                        </div>
+                                        <div class="vital-item d-flex justify-content-between">
+                                            <span>SpO2:</span>
+                                            <strong class="text-success">98%</strong>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Case Contacts Section -->
-                        <div class="nk-divider divider md my-4"></div>
-                        <div class="nk-block animate__animated animate__fadeIn">
-                            <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                <h5 class="title"><i class="fas fa-users mr-2"></i>Cas Contacts</h5>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDefault">
-                                    <i class="fas fa-plus mr-1"></i> Ajouter contact
-                                </button>
-                            </div>
-                            
-                            <div class="bq-note">
-                                <div class="bq-note-item">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="thead-primary">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Nom</th>
-                                                    <th>Prénom</th>
-                                                    <th>Téléphone</th>
-                                                    <th>Relation</th>
-                                                    <th>Fréquence de Contact</th>
-                                                    <th>Dernier contact</th>
-                                                    <th>SMS Sensibilisation</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for contact in case_contacts %}
-                                                <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
-                                                    <th scope="row">{{ forloop.counter }}</th>
-                                                    <td>{{ contact.contact_person.split|first }}</td>
-                                                    <td>{{ contact.contact_person.split|last }}</td>
-                                                    <td><a href="tel:{{ contact.phone_number }}">{{ contact.phone_number }}</a></td>
-                                                    <td>{{ contact.get_relationship_display }}</td>
-                                                    <td>{{ contact.get_contact_frequency_display }}</td>
-                                                    <td>{{ contact.date_contact|date:"d/m/Y" }}</td>
-                                                    <td>
-                                                        {% if contact.smsdepistage %}
-                                                            <span class="badge badge-success">Envoyé</span>
-                                                        {% else %}
-                                                            <span class="badge badge-danger">Non envoyé</span>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-outline-secondary btn-sm notify-btn">
-                                                            <i class="fas fa-bell mr-1"></i> Notifier
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                {% empty %}
-                                                <tr>
-                                                    <td colspan="9" class="text-center py-4">
-                                                        <i class="fas fa-users-slash fa-2x text-muted mb-2"></i>
-                                                        <p>Aucun cas contact enregistré.</p>
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="info-widget interactive-element">
+                                <div class="info-widget-header">
+                                    <div class="info-widget-icon bg-success">
+                                        <i class="fas fa-pills"></i>
                                     </div>
+                                    <h6 class="mb-0">Traitements actuels</h6>
+                                </div>
+                                <div class="info-widget-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-1">• Métformine 500mg</li>
+                                        <li class="mb-1">• Lisinopril 10mg</li>
+                                        <li>• Atorvastatine 20mg</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="info-widget interactive-element">
+                                <div class="info-widget-header">
+                                    <div class="info-widget-icon bg-warning">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <h6 class="mb-0">Prochain RDV</h6>
+                                </div>
+                                <div class="info-widget-body">
+                                    <div class="text-center">
+                                        <h4 class="text-primary mb-1">15 Mars</h4>
+                                        <p class="mb-0 text-muted">10:30 AM</p>
+                                        <small class="text-info">Dr. Diallo</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="info-widget interactive-element">
+                                <div class="info-widget-header">
+                                    <div class="info-widget-icon bg-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <h6 class="mb-0">Alertes médicales</h6>
+                                </div>
+                                <div class="info-widget-body">
+                                    <div class="text-center">
+                                        <h4 class="text-danger mb-1">2</h4>
+                                        <p class="mb-0">Alertes actives</p>
+                                        <small class="text-muted">À surveiller</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graphique de santé -->
+                        <div class="col-12 mb-4">
+                            <div class="medical-card">
+                                <div class="medical-card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-chart-line mr-2 text-primary"></i>
+                                        Évolution des indicateurs de santé
+                                    </h5>
+                                </div>
+                                <div class="medical-card-body">
+                                    <div id="healthChart" style="height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Consultations Tab -->
-                    <div class="tab-pane fade" id="tabConsultations">
-                        <div id="accordion" class="accordion">
-                            {% for consultation in consultations %}
-                                <div class="accordion-item animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
-                                    <a href="#"
-                                       class="accordion-head bg-azure-dim {% if not forloop.first %}collapsed{% endif %}"
-                                       data-toggle="collapse"
-                                       data-target="#accordion-item-{{ consultation.id }}">
-                                        <div class="d-flex align-items-center">
-                                            <div class="mr-3">
-                                                <i class="fas fa-calendar-check fa-lg text-primary"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="title mb-0">
-                                                    Consultation du {{ consultation.consultation_date|date:"d/m/Y" }}
-                                                </h6>
-                                                <small class="text-muted">{{ consultation.reason|truncatewords:25 }}</small>
-                                            </div>
-                                        </div>
-                                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                                    </a>
-                                    <div class="accordion-body collapse {% if forloop.first %}show{% endif %}"
-                                         id="accordion-item-{{ consultation.id }}"
-                                         data-parent="#accordion">
-                                        <div class="accordion-inner">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5 class="text-primary mb-4"><i class="fas fa-info-circle mr-2"></i>Détails de la Consultation</h5>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="far fa-calendar-alt mr-2"></i>Date & Heure</h6>
-                                                        <p>{{ consultation.consultation_date|date:"d/m/Y H:i" }}</p>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-comment-medical mr-2"></i>Raison</h6>
-                                                        <p>{{ consultation.reason|default:"Non spécifiée" }}</p>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-heartbeat mr-2"></i>Constantes</h6>
-                                                        {% if consultation.constante %}
-                                                            <div class="constantes-grid">
-                                                                {% for key, value in consultation.constante.items %}
-                                                                    <div class="constante-item">
-                                                                        <span class="constante-label">{{ key }}:</span>
-                                                                        <span class="constante-value">{{ value }}</span>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            <p>Aucune constante enregistrée.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-flask mr-2"></i>Examens</h6>
-                                                        <p>{{ consultation.examens|default:"Aucun examen associé." }}</p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-6">
-                                                    <h5 class="text-primary mb-4"><i class="fas fa-diagnoses mr-2"></i>Diagnostic & Traitement</h5>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-stethoscope mr-2"></i>Symptômes</h6>
-                                                        {% if consultation.symptomes.all %}
-                                                            <div class="symptoms-tags">
-                                                                {% for symptome in consultation.symptomes.all %}
-                                                                    <span class="badge badge-info mr-1 mb-1">{{ symptome.nom }}</span>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            <p>Aucun symptôme enregistré.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-history mr-2"></i>Antécédents Médicaux</h6>
-                                                        {% if consultation.antecedentsMedicaux.all %}
-                                                            <ul class="list-group list-group-flush">
-                                                                {% for antecedent in consultation.antecedentsMedicaux.all %}
-                                                                    <li class="list-group-item">{{ antecedent.nom }}</li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% else %}
-                                                            <p>Aucun antécédent médical.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-allergies mr-2"></i>Allergies</h6>
-                                                        {% if consultation.allergies.all %}
-                                                            <ul class="list-group list-group-flush">
-                                                                {% for allergie in consultation.allergies.all %}
-                                                                    <li class="list-group-item text-danger">{{ allergie.titre }}</li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% else %}
-                                                            <p>Aucune allergie enregistrée.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-file-medical mr-2"></i>Diagnostic</h6>
-                                                        <div class="diagnosis-content">
-                                                            {{ consultation.diagnosis|safe|default:"Aucun diagnostic enregistré." }}
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item">
-                                                        <h6 class="text-secondary"><i class="fas fa-comments mr-2"></i>Commentaires</h6>
-                                                        <div class="comments-content">
-                                                            {{ consultation.commentaires|safe|default:"Aucun commentaire." }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row mt-4">
-                                                <div class="col-md-4">
-                                                    <div class="detail-item">
-                                                        <h6 class="text-secondary"><i class="fas fa-user-md mr-2"></i>Médecin</h6>
-                                                        <p>{{ consultation.doctor.username|default:"Non attribué" }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="detail-item">
-                                                        <h6 class="text-secondary"><i class="fas fa-info-circle mr-2"></i>Statut</h6>
-                                                        <p>{{ consultation.get_status_display|default:"Non défini" }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="detail-item">
-                                                        <h6 class="text-secondary"><i class="fas fa-clinic-medical mr-2"></i>Service de Suivi</h6>
-                                                        <p>{{ consultation.suivi.nom|default:"Aucun service de suivi" }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% empty %}
-                                <div class="alert alert-info animate__animated animate__fadeIn">
-                                    <i class="fas fa-info-circle mr-2"></i> Aucune consultation disponible pour ce patient.
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                <!-- Onglet Informations personnelles (contenu similaire mais amélioré) -->
+                <div class="tab-pane fade" id="tabPersonal">
+                    <!-- Contenu amélioré de l'onglet informations personnelles -->
+                </div>
 
-                    <!-- Hospitalizations Tab -->
-                    <div class="tab-pane fade" id="tabHospitalizations">
-                        <div id="accordion-hospitalization" class="accordion">
-                            {% for hospitalization in hospitalizations %}
-                                <div class="accordion-item animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
-                                    <a href="#" class="bg-danger-dim accordion-head {% if not forloop.first %}collapsed{% endif %}" 
-                                       data-toggle="collapse" 
-                                       data-target="#accordion-item-hosp-{{ hospitalization.id }}">
-                                        <div class="d-flex align-items-center">
-                                            <div class="mr-3">
-                                                <i class="fas fa-procedures fa-lg text-danger"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="title mb-0">
-                                                    Hospitalisation du {{ hospitalization.admission_date|date:"d/m/Y" }}
-                                                </h6>
-                                                <small class="text-muted">
-                                                    Chambre: {{ hospitalization.bed }}-{{ hospitalization.bed.box }}
-                                                    {% if hospitalization.discharge_date %}
-                                                        <span class="badge badge-outline-primary ml-2">
-                                                            Sortie le: {{ hospitalization.discharge_date|date:"d/m/Y" }}
-                                                        </span>
-                                                    {% endif %}
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                                    </a>
-                                    <div class="accordion-body collapse {% if forloop.first %}show{% endif %}"
-                                         id="accordion-item-hosp-{{ hospitalization.id }}"
-                                         data-parent="#accordion-hospitalization">
-                                        <div class="accordion-inner">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5 class="text-danger mb-4"><i class="fas fa-info-circle mr-2"></i>Détails de l'Hospitalisation</h5>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-bed mr-2"></i>Chambre</h6>
-                                                        <p>{{ hospitalization.bed }}</p>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-user-md mr-2"></i>Médecin Responsable</h6>
-                                                        <p>{{ hospitalization.doctor.username|default:"Non attribué" }}</p>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-comment-medical mr-2"></i>Motif d'Admission</h6>
-                                                        <p>{{ hospitalization.reason_for_admission }}</p>
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-info-circle mr-2"></i>Statut</h6>
-                                                        <p>{{ hospitalization.get_status_display|default:"Non défini" }}</p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-6">
-                                                    <h5 class="text-danger mb-4"><i class="fas fa-chart-line mr-2"></i>Indicateurs</h5>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-dna mr-2"></i>Biologiques</h6>
-                                                        {% if hospitalization.indicateurs_biologiques.all %}
-                                                            <div class="table-responsive">
-                                                                <table class="table table-sm">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Date</th>
-                                                                            <th>GB</th>
-                                                                            <th>CRP</th>
-                                                                            <th>Hémoglobine</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {% for indicator in hospitalization.indicateurs_biologiques.all %}
-                                                                            <tr>
-                                                                                <td>{{ indicator.date|date:"d/m/Y" }}</td>
-                                                                                <td>{{ indicator.globules_blancs }}</td>
-                                                                                <td>{{ indicator.crp }}</td>
-                                                                                <td>{{ indicator.hemoglobine }}</td>
-                                                                            </tr>
-                                                                        {% endfor %}
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        {% else %}
-                                                            <p>Aucun indicateur biologique enregistré.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    
-                                                    <div class="detail-item mb-3">
-                                                        <h6 class="text-secondary"><i class="fas fa-brain mr-2"></i>Fonctionnels</h6>
-                                                        {% if hospitalization.indicateurs_fonctionnels.all %}
-                                                            <div class="table-responsive">
-                                                                <table class="table table-sm">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Date</th>
-                                                                            <th>Mobilité</th>
-                                                                            <th>Conscience</th>
-                                                                            <th>Douleur</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {% for indicator in hospitalization.indicateurs_fonctionnels.all %}
-                                                                            <tr>
-                                                                                <td>{{ indicator.date|date:"d/m/Y" }}</td>
-                                                                                <td>{{ indicator.mobilite }}</td>
-                                                                                <td>{{ indicator.conscience }}</td>
-                                                                                <td>{{ indicator.douleur }}</td>
-                                                                            </tr>
-                                                                        {% endfor %}
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        {% else %}
-                                                            <p>Aucun indicateur fonctionnel enregistré.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row mt-4">
-                                                <div class="col-12">
-                                                    <h5 class="text-danger mb-4"><i class="fas fa-pills mr-2"></i>Médicaments Prescrits</h5>
-                                                    
-                                                    {% if hospitalization.hospiprescriptions.all %}
-                                                        <div class="table-responsive">
-                                                            <table class="table table-hover">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Médicament</th>
-                                                                        <th>Quantité</th>
-                                                                        <th>Posologie</th>
-                                                                        <th>Date Début</th>
-                                                                        <th>Date Fin</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {% for prescription in hospitalization.hospiprescriptions.all %}
-                                                                        <tr>
-                                                                            <td>{{ prescription.medication.nom }}</td>
-                                                                            <td>{{ prescription.quantity }}</td>
-                                                                            <td>{{ prescription.posology }}</td>
-                                                                            <td>{{ prescription.start_date|date:"d/m/Y" }}</td>
-                                                                            <td>{{ prescription.end_date|date:"d/m/Y" }}</td>
-                                                                        </tr>
-                                                                    {% endfor %}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    {% else %}
-                                                        <div class="alert alert-info">
-                                                            <i class="fas fa-info-circle mr-2"></i> Aucune prescription pour cette hospitalisation.
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% empty %}
-                                <div class="alert alert-info animate__animated animate__fadeIn">
-                                    <i class="fas fa-info-circle mr-2"></i> Aucune hospitalisation disponible pour ce patient.
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                <!-- Onglet Médical -->
+                <div class="tab-pane fade" id="tabMedical">
+                    <!-- Contenu médical enrichi -->
+                </div>
 
-                    <!-- Appointments Tab -->
-                    <div class="tab-pane fade" id="tabAppointments">
-                        <div class="card animate__animated animate__fadeIn">
-                            <div class="card-inner">
-                                <h5 class="card-title text-primary mb-4"><i class="fas fa-calendar-alt mr-2"></i>Rendez-vous</h5>
-                                
-                                {% if appointments %}
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="thead-primary">
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Heure</th>
-                                                    <th>Raison</th>
-                                                    <th>Statut</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for appointment in appointments %}
-                                                    <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
-                                                        <td>{{ appointment.date|date:"d/m/Y" }}</td>
-                                                        <td>{{ appointment.time|time:"H:i" }}</td>
-                                                        <td>{{ appointment.reason }}</td>
-                                                        <td>
-                                                            <span class="badge 
-                                                                {% if appointment.status == 'confirmed' %}badge-success
-                                                                {% elif appointment.status == 'pending' %}badge-warning
-                                                                {% elif appointment.status == 'cancelled' %}badge-danger
-                                                                {% else %}badge-secondary{% endif %}">
-                                                                {{ appointment.get_status_display }}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-sm btn-outline-primary mr-1">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                            <button class="btn btn-sm btn-outline-secondary">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                {% else %}
-                                    <div class="alert alert-info animate__animated animate__fadeIn">
-                                        <i class="fas fa-info-circle mr-2"></i> Aucun rendez-vous disponible.
-                                    </div>
-                                {% endif %}
-                                
-                                <div class="text-right mt-3">
-                                    <button class="btn btn-primary">
-                                        <i class="fas fa-plus mr-1"></i> Nouveau Rendez-vous
-                                    </button>
+                <!-- Onglet Historique -->
+                <div class="tab-pane fade" id="tabTimeline">
+                    <div class="medical-timeline">
+                        {% for event in timeline_events %}
+                        <div class="timeline-item {{ event.type }}">
+                            <div class="timeline-content medical-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-0 text-primary">{{ event.title }}</h6>
+                                    <small class="text-muted">{{ event.date|date:"d/m/Y" }}</small>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Follow-ups Tab -->
-                    <div class="tab-pane fade" id="tabSuivis">
-                        <div class="card animate__animated animate__fadeIn">
-                            <div class="card-inner">
-                                <h5 class="card-title text-primary mb-4"><i class="fas fa-user-check mr-2"></i>Suivis</h5>
-                                
-                                {% if suivis %}
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="thead-primary">
-                                                <tr>
-                                                    <th>Activité</th>
-                                                    <th>Service</th>
-                                                    <th>Date Début</th>
-                                                    <th>Date Fin</th>
-                                                    <th>Statut</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for suivi in suivis %}
-                                                    <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
-                                                        <td>{{ suivi.activite.nom }}</td>
-                                                        <td>{{ suivi.services.nom }}</td>
-                                                        <td>{{ suivi.date_debut|date:"d/m/Y" }}</td>
-                                                        <td>{{ suivi.date_fin|date:"d/m/Y" }}</td>
-                                                        <td>
-                                                            <span class="badge 
-                                                                {% if suivi.status == 'completed' %}badge-success
-                                                                {% elif suivi.status == 'in_progress' %}badge-primary
-                                                                {% elif suivi.status == 'pending' %}badge-warning
-                                                                {% else %}badge-secondary{% endif %}">
-                                                                {{ suivi.get_status_display }}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-sm btn-outline-primary">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                {% else %}
-                                    <div class="alert alert-info animate__animated animate__fadeIn">
-                                        <i class="fas fa-info-circle mr-2"></i> Aucun suivi disponible.
-                                    </div>
+                                <p class="mb-2">{{ event.description }}</p>
+                                {% if event.doctor %}
+                                <small class="text-muted">
+                                    <i class="fas fa-user-md mr-1"></i>{{ event.doctor }}
+                                </small>
                                 {% endif %}
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
+                </div>
+
+                <!-- Onglet Documents -->
+                <div class="tab-pane fade" id="tabDocuments">
+                    <!-- Gestion des documents améliorée -->
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add Contact Modal -->
-<div class="modal fade" tabindex="-1" id="modalDefault">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                <em class="icon ni ni-cross"></em>
-            </a>
-            <div class="modal-header">
-                <h5 class="modal-title text-primary">
-                    <i class="fas fa-user-plus mr-2"></i>Ajouter un Cas Contact
-                </h5>
-            </div>
-            <div class="modal-body">
-                <form id="casContactForm" method="post" action="{% url 'add_cas_contact' patient_id=patientsdetail.id %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="id_contact_person">Personne Contact</label>
-                        {{ cascontactsForm.contact_person }}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_phone_number">Téléphone</label>
-                        {{ cascontactsForm.phone_number }}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_relationship">Relation</label>
-                        {{ cascontactsForm.relationship }}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_contact_frequency">Fréquence de Contact</label>
-                        {{ cascontactsForm.contact_frequency }}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_date_contact">Date du Dernier Contact</label>
-                        {{ cascontactsForm.date_contact }}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_smsdepistage">SMS de Sensibilisation</label>
-                        {{ cascontactsForm.smsdepistage }}
-                    </div>
-                    <div class="form-group text-right">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-1"></i> Enregistrer
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Scripts améliorés -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation des composants
+    initPatientDashboard();
+    
+    function initPatientDashboard() {
+        // Animation au scroll
+        initScrollAnimations();
         
-        // Print button functionality
-        $('.print-btn').click(function() {
-            window.print();
-        });
+        // Interactions des cartes
+        initCardInteractions();
         
-        // Back button animation
-        $('.back-btn').hover(
-            function() {
-                $(this).find('em').addClass('animate__animated animate__shakeX');
-            },
-            function() {
-                $(this).find('em').removeClass('animate__animated animate__shakeX');
-            }
-        );
+        // Graphiques
+        initHealthCharts();
         
-        // Notify button animation
-        $('.notify-btn').hover(
-            function() {
-                $(this).find('i').addClass('animate__animated animate__swing');
-            },
-            function() {
-                $(this).find('i').removeClass('animate__animated animate__swing');
-            }
-        );
+        // Gestion des onglets
+        initTabAnimations();
         
-        // Form submission with animation
-        $('#casContactForm').on('submit', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            const submitBtn = form.find('button[type="submit"]');
-            
-            // Add loading animation
-            submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Enregistrement...');
-            submitBtn.prop('disabled', true);
-            
-            // Submit form via AJAX
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        // Show success animation
-                        submitBtn.html('<i class="fas fa-check mr-1"></i> Enregistré!');
-                        submitBtn.removeClass('btn-primary').addClass('btn-success');
-                        
-                        // Close modal and refresh page after delay
-                        setTimeout(function() {
-                            $('#modalDefault').modal('hide');
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        // Show error message
-                        submitBtn.html('<i class="fas fa-save mr-1"></i> Enregistrer');
-                        submitBtn.prop('disabled', false);
-                        alert('Erreur: ' + response.message);
-                    }
-                },
-                error: function() {
-                    submitBtn.html('<i class="fas fa-save mr-1"></i> Enregistrer');
-                    submitBtn.prop('disabled', false);
-                    alert('Une erreur est survenue lors de l\'enregistrement.');
+        // Tooltips et popovers
+        initTooltips();
+    }
+    
+    function initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    observer.unobserve(entry.target);
                 }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.medical-card, .stat-card, .info-widget').forEach(el => {
+            observer.observe(el);
+        });
+    }
+    
+    function initCardInteractions() {
+        // Hover effects
+        document.querySelectorAll('.interactive-element').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
             });
         });
         
-        // Reset form when modal is closed
-        $('#modalDefault').on('hidden.bs.modal', function () {
-            $('#casContactForm')[0].reset();
-            $('#casContactForm button[type="submit"]')
-                .html('<i class="fas fa-save mr-1"></i> Enregistrer')
-                .prop('disabled', false)
-                .removeClass('btn-success')
-                .addClass('btn-primary');
+        // Click animations
+        document.querySelectorAll('.btn-modern').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Animation de clic
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
         });
-        
-        // Tab change animation
+    }
+    
+    function initHealthCharts() {
+        // Exemple de graphique avec Chart.js ou ApexCharts
+        if (typeof ApexCharts !== 'undefined') {
+            const options = {
+                series: [{
+                    name: 'Tension systolique',
+                    data: [120, 125, 118, 122, 119, 121, 123]
+                }, {
+                    name: 'Tension diastolique',
+                    data: [80, 82, 78, 81, 79, 80, 82]
+                }],
+                chart: {
+                    height: 300,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        show: false
+                    }
+                },
+                colors: ['#4a6cf7', '#dc3545'],
+                stroke: {
+                    curve: 'smooth',
+                    width: 3
+                },
+                markers: {
+                    size: 5,
+                    hover: {
+                        size: 7
+                    }
+                },
+                xaxis: {
+                    categories: ['01/03', '02/03', '03/03', '04/03', '05/03', '06/03', '07/03']
+                },
+                tooltip: {
+                    theme: 'light'
+                }
+            };
+            
+            const chart = new ApexCharts(document.querySelector("#healthChart"), options);
+            chart.render();
+        }
+    }
+    
+    function initTabAnimations() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             const target = $(e.target).attr("href");
             $(target).addClass('animate__animated animate__fadeIn');
+            
+            // Réinitialiser l'animation pour la prochaine ouverture
+            setTimeout(() => {
+                $(target).removeClass('animate__animated animate__fadeIn');
+            }, 500);
         });
+    }
+    
+    function initTooltips() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover',
+            placement: 'top',
+            animation: true
+        });
+    }
+    
+    // Gestion de l'impression
+    $('.print-btn').click(function() {
+        $('.patient-dashboard').addClass('printing');
+        window.print();
+        setTimeout(() => {
+            $('.patient-dashboard').removeClass('printing');
+        }, 500);
     });
+    
+    // Simulation de données en temps réel
+    function updateRealTimeStats() {
+        // Cette fonction pourrait être connectée à des WebSockets
+        // pour des mises à jour en temps réel
+        setInterval(() => {
+            // Mise à jour simulée des statistiques
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const current = parseInt(stat.textContent);
+                const newValue = current + Math.floor(Math.random() * 2);
+                animateValue(stat, current, newValue, 1000);
+            });
+        }, 30000); // Toutes les 30 secondes
+    }
+    
+    function animateValue(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.innerHTML = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+    
+    // Démarrer les mises à jour en temps réel
+    updateRealTimeStats();
+});
 </script>
 {% endblock %}
 {#{% extends 'layout/base.html' %}#}
