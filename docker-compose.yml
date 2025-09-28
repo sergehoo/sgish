@@ -43,7 +43,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: >
-      gunicorn chu.wsgi:application
+      gunicorn smitci.wsgi:application
       --bind 0.0.0.0:8000
       --workers 2 --threads 2
       --timeout 60

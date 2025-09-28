@@ -65,7 +65,7 @@ if [[ "$#" -gt 0 ]]; then
 fi
 
 # --- Sinon fallback Gunicorn configurable par env ---
-APP_MODULE="${APP_MODULE:-chu.wsgi:application}"
+APP_MODULE="${APP_MODULE:-smitci.wsgi:application}"
 WORKER_CLASS="${WORKER_CLASS:-sync}"  # pour ASGI: uvicorn.workers.UvicornWorker
 BIND="${GUNICORN_BIND:-0.0.0.0:8000}"
 OPTS="${GUNICORN_OPTS:---workers 2 --threads 2 --timeout 60 --graceful-timeout 30 --log-level warning}"
