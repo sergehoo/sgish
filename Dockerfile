@@ -1,6 +1,6 @@
 FROM python:3.9-slim
-LABEL authors="ogahserge"
 
+LABEL authors="ogahserge"
 WORKDIR /chu-app
 
 # ---- venv
@@ -8,28 +8,26 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# ---- dépendances système (runtime + build)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    # GeoDjango / Postgres
-    gdal-bin libgdal-dev libpq-dev proj-bin proj-data \
-    # Build tools pour pip
-    gcc python3-dev python3-setuptools \
-    # WeasyPrint (runtime)
-    libcairo2 libpango-1.0-0 libpangoft2-1.0-0 libpangocairo-1.0-0 \
-    libgdk-pixbuf-2.0-0 libharfbuzz0b libfribidi0 \
-    libglib2.0-0 libffi-dev libxml2 libxslt1.1 \
-    # Codecs/Images + polices
-    libjpeg62-turbo libpng16-16 fonts-dejavu-core fonts-liberation \
-    # Outils utiles
-    postgresql-client \
- && rm -rf /var/lib/apt/lists/* \
+# ---- dépendances système (GeoDjango, WeasyPrint, Postgres client, build)
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      # GeoDjango / spatial
+      gdal-bin libgdal-dev libgeos-dev libproj-dev proj-bin proj-data \
+      # Build tools pour pip/psycopg2
+      build-essential gcc python3-dev libpq-dev \
+      # WeasyPrint (runtime)
+      libcairo2 libpango-1.0-0 libpangoft2-1.0-0 libpangocairo-1.0-0 \
+      libgdk-pixbuf-2.0-0 libharfbuzz0b libfribidi0 \
+      libglib2.0-0 libffi-dev libxml2 libxslt1.1 \
+      # Images + polices
+      libjpeg62-turbo libpng16-16 fonts-dejavu-core fonts-liberation \
+      # Outils
+      postgresql-client \
+    ; \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gdal-bin libgdal-dev libgeos-dev libproj-dev \
-    build-essential libpq-dev \
- && rm -rf /var/lib/apt/lists/*
-
-# ---- GDAL/PROJ env
+# ---- GDAL/PROJ env (chemins standard Debian/Ubuntu)
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
     C_INCLUDE_PATH=/usr/include/gdal \
     GDAL_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/libgdal.so \
@@ -40,17 +38,9 @@ ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
 RUN pip install --upgrade pip
 COPY requirements.txt /chu-app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# ---- logs
 RUN mkdir -p /chu-app/smitci/logs
-# ⚠️ (Optionnel) torch & co → à mettre plutôt dans l'image worker
-# RUN pip install --no-cache-dir \
-#     "torch==2.2.2" "torchvision==0.17.2" \
-#     torchxrayvision==0.0.32 pydicom scikit-image numpy
-# # (Optionnel) pré-téléchargement de poids — je déconseille en image web
-# ENV TORCH_HOME=/opt/torch-cache
-# RUN mkdir -p ${TORCH_HOME} && chmod -R 777 ${TORCH_HOME}
-# RUN python - <<'PY'
-# print("SKIP pretrained weights in web image.")
-# PY
 
 # ---- code
 COPY . /chu-app/
